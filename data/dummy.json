@@ -1,0 +1,100 @@
+{
+  "policies": [
+    {
+      "id": 1,
+      "name": "Policy A",
+      "categories": "Management",
+      "tags": [
+        "urgent",
+        "review"
+      ],
+      "policyType": "Security",
+      "readStatus": true,
+      "dateCreated": "2024-08-01"
+    },
+    {
+      "id": 3,
+      "name": "Policy C",
+      "categories": "IT",
+      "tags": [
+        "important",
+        "update"
+      ],
+      "policyType": "Compliance",
+      "readStatus": true,
+      "dateCreated": "2024-08-03"
+    },
+    {
+      "id": 4,
+      "name": "Policy D",
+      "categories": "Contracts",
+      "tags": [
+        "new",
+        "review"
+      ],
+      "policyType": "Security",
+      "readStatus": true,
+      "dateCreated": "2024-08-04"
+    },
+    {
+      "id": 5,
+      "name": "Policy E",
+      "categories": "Environment",
+      "tags": [
+        "urgent",
+        "policy"
+      ],
+      "policyType": "Regulation",
+      "readStatus": true,
+      "dateCreated": "2024-08-05"
+    },
+    {
+      "id": 7,
+      "name": "Policy G",
+      "categories": "Finance",
+      "tags": [
+        "finance",
+        "review"
+      ],
+      "policyType": "Security",
+      "readStatus": true,
+      "dateCreated": "2024-08-07"
+    },
+    {
+      "id": 9,
+      "name": "Policy I",
+      "categories": "Technology",
+      "tags": [
+        "tech",
+        "update"
+      ],
+      "policyType": "Compliance",
+      "readStatus": true,
+      "dateCreated": "2024-08-09"
+    },
+    {
+      "id": 11,
+      "name": "Policy K",
+      "categories": "Business Solutions",
+      "tags": [
+        "health",
+        "urgent"
+      ],
+      "policyType": "Security",
+      "readStatus": false,
+      "dateCreated": "2024-08-11"
+    },
+    {
+      "id": 12,
+      "name": "Policy L",
+      "categories": "Marketing",
+      "tags": [
+        "finance",
+        "marketing"
+      ],
+      "policyType": "Regulation",
+      "readStatus": true,
+      "dateCreated": "2024-08-12"
+    }
+  ]
+}

@@ -1,0 +1,83 @@
+[
+  {
+    "id": "B34EAFEF86A141BE8501EF3EB3492FC5",
+    "title": "KF153 Vendor Request",
+    "description": "KF153 Vendor Request",
+    "version": 1,
+    "activeversion": true,
+    "finalized": false,
+    "type": "published",
+    "modified": {
+      "on": "2025-02-20T04:19:23Z",
+      "by": {
+        "id": "1EF9EB6E7F2F41D69D5408609CFF5FFD",
+        "name": "root",
+        "type": "user",
+        "firstname": "root",
+        "title": ", root",
+        "active": true,
+        "uri": "http://kdaukeimsm/rest-ws/service/organization/id/1EF9EB6E7F2F41D69D5408609CFF5FFD"
+      }
+    },
+    "created": {
+      "on": "2025-02-20T04:19:23Z",
+      "by": {
+        "id": "1EF9EB6E7F2F41D69D5408609CFF5FFD",
+        "name": "root",
+        "type": "user",
+        "firstname": "root",
+        "title": ", root",
+        "active": true,
+        "uri": "http://kdaukeimsm/rest-ws/service/organization/id/1EF9EB6E7F2F41D69D5408609CFF5FFD"
+      }
+    },
+    "icon": {
+      "id": "17FD942562B44D3C9DCAD93B17E43049",
+      "uri": "http://kdaukeimsm/rest-ws/service/ui/icon/17FD942562B44D3C9DCAD93B17E43049"
+    },
+    "uri": "http://kdaukeimsm/rest-ws/service/dms/B34EAFEF86A141BE8501EF3EB3492FC5?type=published",
+    "clienturl": "http://10.170.193.9/app/client/object/B34EAFEF86A141BE8501EF3EB3492FC5?type=published",
+    "contentcount": 1,
+    "contentlinkedcount": 0,
+    "contentid": "B34EAFEF86A141BE8501EF3EB3492FC5",
+    "contenttype": "published",
+    "content": "http://kdaukeimsm/rest-ws/service/dms/B34EAFEF86A141BE8501EF3EB3492FC5/content?type=published",
+    "slide": "http://kdaukeimsm/rest-ws/service/dms/B34EAFEF86A141BE8501EF3EB3492FC5/slide?type=published",
+    "folder": false,
+    "iscontextfolder": false,
+    "lock": "NOT_LOCKED",
+    "data": {
+      "classification": "Internal",
+      "classification_meta": {
+        "id": "9F2AB562AD46440D84198DA158C87B22",
+        "label": "Internal",
+        "defaultrepresentation": "Internal"
+      },
+      "docstatus": "Published",
+      "docstatus_meta": {
+        "id": "FA39E66AA3F9441A868084A59936E2E8",
+        "label": "Published",
+        "defaultrepresentation": "Published"
+      },
+      "external": false,
+      "name": "KF153 Vendor Request",
+      "publishdate": "2025-02-20",
+      "releasedate": "2025-02-20",
+      "reviewdate": "2025-02-20",
+      "type": "Form",
+      "type_meta": {
+        "id": "1C9FB27ED5244F52BB329670EB09C8FA",
+        "label": "Form",
+        "defaultrepresentation": "Form"
+      },
+      "version": 1,
+      "verstatus": "Published",
+      "verstatus_meta": {
+        "id": "EE052E37CA1947F9BF75127FF94625DF",
+        "label": "Published",
+        "defaultrepresentation": "Published"
+      }
+    },
+    "favorite": false
+  }
+]
