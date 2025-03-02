@@ -42,3 +42,115 @@ export const getDocuments = async (req: Request, res: Response) => {
     console.log("There was an error fetching the documents" + error);
   }
 };
+
+export const getDocumentContent = async (req: Request, res: Response) => {
+  try {
+    const { id } = req.params;
+
+    // Fetch the document content as binary data
+    const response = await axios.get(
+      `${URL}dms/${id}/content?type=sysobject&version=-1&index=0&asdownload=false&recyclebin=false&rendition=PDF`,
+      {
+        headers: {
+          Authorization: auth,
+        },
+        responseType: "arraybuffer", // Treat the response as binary data
+      }
+    );
+
+    // Convert the binary data to Base64
+    const base64Content = Buffer.from(response.data, "binary").toString(
+      "base64"
+    );
+
+    // Send the Base64-encoded content back to the client
+    res.status(200).json({ content: base64Content });
+  } catch (error) {
+    console.error("Error fetching document content:", error);
+    res.status(500).json({ message: "Failed to fetch document content" });
+  }
+};
+
+export const getDocumentById = async (req: Request, res: Response) => {
+  try {
+    const { id } = req.params;
+    const response = await axios.get(
+      `${URL}dms/${id}?type=sysobject&version=-1&content=true&fields=true&typemeta=false&datameta=false&form=false&audit=false&versions=false&views=false&additionalvisibility=false&qname=false&contenttext=false&recyclebin=false&contextfolder=false&attachmentinfo=false&storageinfo=false&storageinfodetails=false&extendedinfo=false&nullvalues=false`,
+      {
+        headers: {
+          Authorization: auth,
+        },
+      }
+    );
+    const data = { name: response.data.title, data: response.data.data };
+    res.json(data);
+  } catch (error) {
+    console.error("Error fetching the document data:", error);
+    res.status(500).json({ message: "Failed to fetch document data" });
+  }
+};
+
+export const getDocumentDownload = async (req: Request, res: Response) => {
+  try {
+    const { id } = req.params;
+
+    // Make a request to the external API
+    const response = await axios.get(
+      `${URL}dms/${id}/content?type=sysobject&version=-1&index=0&asdownload=true&recyclebin=false`,
+      {
+        headers: {
+          Authorization: auth,
+        },
+        responseType: "stream", // Ensure the response is treated as a stream
+      }
+    );
+
+    // Forward the Content-Disposition header to the client
+    if (response.headers["content-disposition"]) {
+      res.setHeader(
+        "Content-Disposition",
+        response.headers["content-disposition"]
+      );
+    }
+
+    // Set the Content-Type header
+    if (response.headers["content-type"]) {
+      res.setHeader("Content-Type", response.headers["content-type"]);
+    }
+
+    // Stream the file data to the client
+    response.data.pipe(res);
+  } catch (error) {
+    console.error("Error downloading the document:", error);
+    res.status(500).json({ message: "Failed to download the document" });
+  }
+};
+
+export const getFilterData = async (req: Request, res: Response) => {
+  try {
+    const response = await axios.get(
+      `${URL}system/type/name/published?elements=true&baseparameter=true&embedcs=true&_alllocales=false`,
+      {
+        headers: {
+          Authorization: auth,
+        },
+      }
+    );
+
+    const resultArray = [];
+    const requiredFields = { category: 0, functionsubfn: 1 };
+    const elements = response.data.elements;
+    for (let i = 0; i < elements.length; i++) {
+      if ("codesystem" in elements[i] && elements[i].name in requiredFields) {
+        resultArray.push({
+          name: elements[i].name,
+          entries: elements[i].codesystem.entries,
+        });
+      }
+    }
+    res.json(resultArray);
+  } catch (error) {
+    console.error("Error getting the filter data:", error);
+    res.status(500).json({ message: "Failed to get the filter data" });
+  }
+};

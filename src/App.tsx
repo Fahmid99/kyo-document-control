@@ -6,6 +6,7 @@ import { ThemeProvider } from "@mui/material/styles";
 import TestPage from "./pages/TestPage.tsx";
 import HelpPage from "./pages/HelpPage/HelpPage.tsx";
 import DocumentsPage from "./pages/DocumentsPage/DocumentsPage.tsx";
+import ContentViewPage from "./pages/ContentViewPage/ContentViewPage.tsx";
 
 function App() {
   return (
@@ -18,9 +19,11 @@ function App() {
               <Route index element={<TestPage />} /> {/* Default page */}
               <Route path="help" element={<HelpPage />} />
               <Route path="documents" element={<DocumentsPage />}>
-                <Route path=":category" element={<DocumentsPage />} />{" "}
+                <Route path=":category" element={<DocumentsPage />} />
+
                 {/* Nested route for category */}
               </Route>
+              <Route path="documents/:type/:id" element={<ContentViewPage />} />
             </Route>
           </Routes>
         </Router>

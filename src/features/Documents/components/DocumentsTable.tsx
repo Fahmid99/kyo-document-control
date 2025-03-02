@@ -1,4 +1,5 @@
 import React from "react";
+import { Document } from "../../../Types/types";
 import {
   TableContainer,
   Table,
@@ -9,17 +10,6 @@ import {
 } from "@mui/material";
 
 // Define the Document type
-interface Document {
-  id: string;
-  data: {
-    name: string;
-    type: string;
-    publishdate: string;
-    releasedate: string;
-    reviewdate: string;
-    classification: string;
-  };
-}
 
 // Define the props for DocumentsTable
 interface DocumentsTableProps {
@@ -27,9 +17,12 @@ interface DocumentsTableProps {
   handleRowClick: (doc: Document) => void;
 }
 
-function DocumentsTable({ filteredDocuments, handleRowClick }: DocumentsTableProps) {
+function DocumentsTable({
+  filteredDocuments,
+  handleRowClick,
+}: DocumentsTableProps) {
   return (
-    <TableContainer sx={{ borderLeft: "none", borderRight: "none" }}>
+    <TableContainer sx={{}}>
       <Table>
         <TableHead sx={{ background: "#0A9BCD", color: "white" }}>
           <TableRow>
@@ -61,7 +54,12 @@ function DocumentsTable({ filteredDocuments, handleRowClick }: DocumentsTablePro
             <TableCell
               sx={{ color: "white", fontWeight: "bold", fontSize: "16px" }}
             >
-              Classification
+              Categories
+            </TableCell>
+            <TableCell
+              sx={{ color: "white", fontWeight: "bold", fontSize: "16px" }}
+            >
+              Functionsubfn
             </TableCell>
           </TableRow>
         </TableHead>
@@ -82,7 +80,8 @@ function DocumentsTable({ filteredDocuments, handleRowClick }: DocumentsTablePro
               <TableCell>{doc.data.publishdate}</TableCell>
               <TableCell>{doc.data.releasedate}</TableCell>
               <TableCell>{doc.data.reviewdate}</TableCell>
-              <TableCell>{doc.data.classification}</TableCell>
+              <TableCell>{doc.data.category.join(", ")}</TableCell>
+              <TableCell>{doc.data.functionsubfn.join(", ")}</TableCell>
             </TableRow>
           ))}
         </TableBody>
