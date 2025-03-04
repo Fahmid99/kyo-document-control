@@ -18,6 +18,7 @@ import HomeIcon from "@mui/icons-material/Home";
 import PolicyIcon from "@mui/icons-material/Policy";
 import ArticleIcon from "@mui/icons-material/Article";
 import HelpIcon from "@mui/icons-material/Help";
+import ProcedureIcon from '@mui/icons-material/FormatListBulleted';
 
 const drawerWidth = 240;
 
@@ -100,6 +101,17 @@ const DrawerContent = ({ open, handleClick }) => {
                 <ArticleIcon />
               </ListItemIcon>
               <ListItemText primary="Forms" />
+            </ListItemButton>
+            <ListItemButton
+              component={Link}
+              to="/documents/procedures"
+              sx={{ ...listItemButtonStyles, pl: 4 }}
+              selected={location.pathname === "/documents/procedures"}
+            >
+              <ListItemIcon>
+                <ProcedureIcon />
+              </ListItemIcon>
+              <ListItemText primary="Procedures" />
             </ListItemButton>
           </List>
         </Collapse>

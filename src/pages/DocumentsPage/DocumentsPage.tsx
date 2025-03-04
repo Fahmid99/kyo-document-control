@@ -12,6 +12,7 @@ import DescriptionIcon from "@mui/icons-material/Description"; // For "All Docum
 const categoryToTypeMap: Record<string, string> = {
   policies: "Policy", // URL category "policies" maps to document type "Policy"
   forms: "Form", // URL category "forms" maps to document type "Form"
+  procedures: "Procedure"
 };
 
 function DocumentsPage() {

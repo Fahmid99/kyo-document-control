@@ -10,7 +10,7 @@ interface Document {
   };
 }
 
-const URL = "http://kdaukeimsm/rest-ws/service/";
+const URL = "http://kdauapp05/rest-ws/service/";
 
 dotenv.config();
 const auth =
