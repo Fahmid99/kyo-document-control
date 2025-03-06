@@ -154,3 +154,22 @@ export const getFilterData = async (req: Request, res: Response) => {
     res.status(500).json({ message: "Failed to get the filter data" });
   }
 };
+
+export const getSearchResults = async (req: Request, res: Response) => {
+  try {
+    // Extract the request body from the incoming request
+    const requestBody = req.body;
+    // Make the POST request with the body and headers
+    const response = await axios.post(`http://kdauapp05/search`, requestBody, {
+      headers: {
+        Authorization: auth, // Assuming `auth` is defined elsewhere
+      },
+    });
+    console.log(response.data);
+    // Send the response back to the client
+    res.status(200).json(response.data);
+  } catch (error) {
+    console.error("Error getting the search results:", error);
+    res.status(500).json({ message: "Failed to get the search results" });
+  }
+};

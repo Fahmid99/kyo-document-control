@@ -1,12 +1,16 @@
 import { createTheme } from "@mui/material/styles";
 import { PaletteOptions } from "@mui/material/styles";
+
+// Extend the Palette and PaletteOptions interfaces
 declare module "@mui/material/styles" {
   interface Palette {
     kyoBlue: Palette["primary"]; // Define kyoBlue as a palette color
+    kyoPurple: Palette["primary"]; // Define kyoPurple as a palette color
   }
-}
-interface PaletteOptions {
-  kyoBlue?: PaletteOptions["primary"]; // Optional for theme configuration
+  interface PaletteOptions {
+    kyoBlue?: PaletteOptions["primary"]; // Optional for theme configuration
+    kyoPurple?: PaletteOptions["primary"]; // Optional for theme configuration
+  }
 }
 
 // Define the theme options
@@ -24,6 +28,9 @@ const themeOptions = {
     },
     kyoBlue: {
       main: "#0a9bcd", // Custom color
+    },
+    kyoPurple: {
+      main: "#6e3cbe", // Custom color
     },
   },
   typography: {
@@ -69,10 +76,9 @@ const themeOptions = {
     MuiTableContainer: {
       styleOverrides: {
         root: {
-          
           border: "1px solid #e0e0e0",
           borderRadius: "8px",
-          borderBottom: "none",
+          
         },
       },
     },

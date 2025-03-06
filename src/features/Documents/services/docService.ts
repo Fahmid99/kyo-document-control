@@ -55,10 +55,35 @@ const getFilterData = async () => {
   }
 };
 
+const getSearchResults = async (term: string) => {
+  try {
+    // Define the request body
+    const requestBody = {
+      term: term,
+      types: [
+        // optional: list of object types combined with OR. In the case of index data search, only one object type is allowed
+        "published",
+      ],
+    };
+
+    // Make the POST request with the body
+    const response = await axios.post(
+      `${API_BASE_URL}/searchresults`,
+      requestBody
+    );
+
+    // Return the response data
+    return response.data;
+  } catch (error) {
+    console.log("There was an error fetching the search results:", error);
+    throw error;
+  }
+};
 export default {
   getDocuments: getDocuments,
   getDocumentContent: getDocumentContent,
   getDocumentById: getDocumentById,
   getDocumentDownload: getDocumentDownload,
   getFilterData: getFilterData,
+  getSearchResults: getSearchResults,
 };

@@ -78,7 +78,7 @@ const DrawerContent = ({ open, handleClick }) => {
           <ListItemText primary="All Documents" />
           {open ? <ExpandLess /> : <ExpandMore />}
         </ListItemButton>
-        <Collapse in={open} timeout="auto" unmountOnExit>
+        <Collapse in={true} timeout="auto" unmountOnExit>
           <List component="div" disablePadding>
             <ListItemButton
               component={Link}

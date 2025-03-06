@@ -88,6 +88,8 @@ function DocumentsPage() {
     navigate(`/documents/${doc.data.type}/${doc.id}`);
   };
 
+  console.log(documents);
+
   return (
     <div>
       <Box display={"flex"} alignItems="center">
@@ -112,6 +114,7 @@ function DocumentsPage() {
           setfilterQuery={setfilterQuery}
           handleSearchChange={handleSearchChange}
           searchQuery={searchQuery}
+          documents={documents}
         />
         <DocumentsTable filteredDocuments={filteredDocuments} handleRowClick={handleRowClick} />
       </Box>

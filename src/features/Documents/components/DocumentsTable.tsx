@@ -15,7 +15,10 @@ interface DocumentsTableProps {
   handleRowClick: (doc: Document) => void;
 }
 
-function DocumentsTable({ filteredDocuments, handleRowClick }: DocumentsTableProps) {
+function DocumentsTable({
+  filteredDocuments,
+  handleRowClick,
+}: DocumentsTableProps) {
   const [order, setOrder] = useState<"asc" | "desc">("asc");
   const [orderBy, setOrderBy] = useState<keyof Document["data"]>("name");
 
@@ -86,29 +89,7 @@ function DocumentsTable({ filteredDocuments, handleRowClick }: DocumentsTablePro
                 Type
               </TableSortLabel>
             </TableCell>
-            <TableCell
-              sx={{ color: "white", fontWeight: "bold", fontSize: "16px" }}
-            >
-              <TableSortLabel
-                active={orderBy === "publishdate"}
-                direction={orderBy === "publishdate" ? order : "asc"}
-                onClick={() => handleSort("publishdate")}
-                sx={{
-                  color: "white", // Ensure text stays white
-                  "&.Mui-active": {
-                    color: "white", // Ensure text stays white when active
-                  },
-                  "&:hover": {
-                    color: "white", // Ensure text stays white on hover
-                  },
-                  "& .MuiTableSortLabel-icon": {
-                    color: "white !important", // Ensure the arrow is white
-                  },
-                }}
-              >
-                Publish Date
-              </TableSortLabel>
-            </TableCell>
+
             <TableCell
               sx={{ color: "white", fontWeight: "bold", fontSize: "16px" }}
             >
@@ -132,29 +113,7 @@ function DocumentsTable({ filteredDocuments, handleRowClick }: DocumentsTablePro
                 Release Date
               </TableSortLabel>
             </TableCell>
-            <TableCell
-              sx={{ color: "white", fontWeight: "bold", fontSize: "16px" }}
-            >
-              <TableSortLabel
-                active={orderBy === "reviewdate"}
-                direction={orderBy === "reviewdate" ? order : "asc"}
-                onClick={() => handleSort("reviewdate")}
-                sx={{
-                  color: "white", // Ensure text stays white
-                  "&.Mui-active": {
-                    color: "white", // Ensure text stays white when active
-                  },
-                  "&:hover": {
-                    color: "white", // Ensure text stays white on hover
-                  },
-                  "& .MuiTableSortLabel-icon": {
-                    color: "white !important", // Ensure the arrow is white
-                  },
-                }}
-              >
-                Review Date
-              </TableSortLabel>
-            </TableCell>
+
             <TableCell
               sx={{ color: "white", fontWeight: "bold", fontSize: "16px" }}
             >
@@ -181,9 +140,9 @@ function DocumentsTable({ filteredDocuments, handleRowClick }: DocumentsTablePro
             >
               <TableCell>{doc.data.name}</TableCell>
               <TableCell>{doc.data.type}</TableCell>
-              <TableCell>{doc.data.publishdate}</TableCell>
+
               <TableCell>{doc.data.releasedate}</TableCell>
-              <TableCell>{doc.data.reviewdate}</TableCell>
+
               <TableCell>{doc.data.category.join(", ")}</TableCell>
               <TableCell>{doc.data.functionsubfn.join(", ")}</TableCell>
             </TableRow>
