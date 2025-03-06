@@ -10,19 +10,18 @@ import {
   TableContainer,
   TableHead,
   TableRow,
-  Paper,
   Divider,
 } from "@mui/material";
 import React, { useState } from "react";
-import { useNavigate } from "react-router-dom"; // Import useNavigate
+import { useNavigate } from "react-router-dom";
 import docService from "../../features/Documents/services/docService";
 import SearchIcon from "@mui/icons-material/Search";
 import HelpIcon from "@mui/icons-material/Help";
 import { useTheme } from "@mui/material/styles";
 
 interface SearchModalProps {
-  open: boolean; // Properly type the `open` prop as a boolean
-  handleClose: () => void; // Properly type the `handleClose` prop as a function
+  open: boolean;
+  handleClose: () => void;
 }
 
 interface SearchResult {
@@ -35,32 +34,30 @@ interface SearchResult {
     id: string;
     modified: string;
     modifiertitle: string;
-    "published.name"?: string; // Flattened key
-    "published.audience"?: string[]; // Flattened key
-    "published.category"?: string[]; // Flattened key
-    "published.classification"?: string; // Flattened key
-    "published.docstatus"?: string; // Flattened key
-    "published.external"?: boolean; // Flattened key
-    "published.functionsubfn"?: string[]; // Flattened key
-    "published.publishdate"?: string; // Flattened key
-    "published.related"?: string[]; // Flattened key
-    "published.releasedate"?: string; // Flattened key
-    "published.reviewdate"?: string; // Flattened key
-    "published.type"?: string; // Flattened key
-    "published.version"?: number; // Flattened key
-    "published.verstatus"?: string; // Flattened key
+    "published.name"?: string;
+    "published.audience"?: string[];
+    "published.category"?: string[];
+    "published.classification"?: string;
+    "published.docstatus"?: string;
+    "published.external"?: boolean;
+    "published.functionsubfn"?: string[];
+    "published.publishdate"?: string;
+    "published.related"?: string[];
+    "published.releasedate"?: string;
+    "published.reviewdate"?: string;
+    "published.type"?: string;
+    "published.version"?: number;
+    "published.verstatus"?: string;
   };
 }
 
 function SearchModal({ open, handleClose }: SearchModalProps) {
   const [searchTerm, setSearchTerm] = useState("");
-  const [searchResults, setSearchResults] = useState<SearchResult[]>([]); // State to store search results
-  const navigate = useNavigate(); // Hook for navigation
-  const theme = useTheme(); 
+  const [searchResults, setSearchResults] = useState<SearchResult[]>([]);
+  const navigate = useNavigate();
+  const theme = useTheme();
 
-  const handleSearchTermChange = (
-    event: React.ChangeEvent<HTMLInputElement>
-  ) => {
+  const handleSearchTermChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     setSearchTerm(event.target.value);
   };
 
@@ -69,22 +66,37 @@ function SearchModal({ open, handleClose }: SearchModalProps) {
       const response = await docService.getSearchResults(searchTerm);
       console.log("Search response:", response);
 
-      // Assuming the response structure is { hits: { hits: [...] } }
       if (response.hits && response.hits.hits) {
-        setSearchResults(response.hits.hits); // Update state with search results
+        setSearchResults(response.hits.hits);
       } else {
-        setSearchResults([]); // Clear results if no matches found
+        setSearchResults([]);
       }
     } catch (error) {
-      console.error("There was an error fetching search results:", error);
-      setSearchResults([]); // Clear results on error
+      console.error("Error fetching search results:", error);
+      setSearchResults([]);
     }
   };
 
-  // Handle row click to navigate to the document details page
-  const handleRowClick = (type: string, id: string) => {
-    navigate(`/documents/${type}/${id}`); // Navigate to the dynamic route
-    handleClose(); // Close the modal after navigation
+  const handleRowClick = (type: string | undefined, id: string) => {
+    if (type) {
+      navigate(`/documents/${type}/${id}`);
+      handleClose();
+    }
+  };
+
+  const formatDate = (dateString?: string): string => {
+    if (!dateString) return "N/A"; // Handle undefined or null dates
+    try {
+      const date = new Date(dateString);
+      if (isNaN(date.getTime())) return "Invalid Date"; // Handle invalid dates
+      const day = String(date.getDate()).padStart(2, "0");
+      const month = String(date.getMonth() + 1).padStart(2, "0");
+      const year = date.getFullYear();
+      return `${day}-${month}-${year}`;
+    } catch (error) {
+      console.error("Error formatting date:", error);
+      return "N/A";
+    }
   };
 
   return (
@@ -100,7 +112,8 @@ function SearchModal({ open, handleClose }: SearchModalProps) {
           top: "50%",
           left: "50%",
           transform: "translate(-50%, -50%)",
-          width: "auto", // Increased width to accommodate the table
+          width: "80%",
+          maxWidth: "800px",
           bgcolor: "background.paper",
           boxShadow: 24,
           p: 4,
@@ -113,14 +126,13 @@ function SearchModal({ open, handleClose }: SearchModalProps) {
         <Divider />
         <Box sx={{ padding: "1em 1em 1em 0em" }}>
           <Box sx={{ display: "flex", alignItems: "center" }}>
-            <HelpIcon sx={{ color: theme.palette.kyoPurple.main, mr: 1 }} />{" "}
-            {/* Add margin-right to the icon */}
+            <HelpIcon sx={{ color: theme.palette.kyoPurple.main, mr: 1 }} />
             <Typography variant="body1" component="span">
               Will search for exact word matches in file contents of all documents
             </Typography>
           </Box>
         </Box>
-        <Box display={"flex"} flexDirection={"column"} gap={2} mt={2}>
+        <Box display="flex" flexDirection="column" gap={2} mt={2}>
           <TextField
             label="Enter search term"
             value={searchTerm}
@@ -128,10 +140,9 @@ function SearchModal({ open, handleClose }: SearchModalProps) {
             fullWidth
             color="secondary"
             sx={{
-              color: theme.palette.kyoPurple.main,
               "& .MuiOutlinedInput-root": {
                 "&.Mui-focused fieldset": {
-                  borderColor: theme.palette.kyoPurple.main, // Change the border color when focused
+                  borderColor: theme.palette.kyoPurple.main,
                 },
               },
             }}
@@ -144,58 +155,45 @@ function SearchModal({ open, handleClose }: SearchModalProps) {
             Begin Search <SearchIcon sx={{ ml: "0.3em" }} />
           </Button>
         </Box>
-        {searchResults.length > 1 && (
-           <Typography sx={{ mt: 2 }}>
-           There were{" "}
-           <span style={{ color: theme.palette.kyoPurple.main, fontWeight:"bold" }}>
-             {searchResults.length} matches found
-           </span>
-         </Typography>
-        )}
-        {/* Display search results in a table */}
         {searchResults.length > 0 && (
-          <TableContainer
-            sx={{ mt: 4, boxShadow: "0px 2px 2px 1px rgba(0, 0, 0, 0.1)" , }}
-          >
-            <Table>
-              <TableHead sx={{background:theme.palette.kyoPurple.main, color:'white'}}>
-                <TableRow>
-                  <TableCell   sx={{ color: "white", fontWeight: "bold",  }}>Document Name</TableCell>
-                  <TableCell   sx={{ color: "white", fontWeight: "bold",  }}>Document Name</TableCell>
-                  <TableCell   sx={{ color: "white", fontWeight: "bold",  }}>Release Date</TableCell>
-                  <TableCell   sx={{ color: "white", fontWeight: "bold",  }}>Categories</TableCell>
-                  <TableCell   sx={{ color: "white", fontWeight: "bold", }}>Functionsubfn</TableCell>
-                </TableRow>
-              </TableHead>
-              <TableBody>
-                {searchResults.map((result) => (
-                  <TableRow
-                    key={result._id}
-                    hover // Add hover effect
-                    onClick={() =>
-                      handleRowClick(result._source.type, result._id)
-                    }
-                    style={{ cursor: "pointer" }} // Change cursor to pointer
-                  >
-                    <TableCell>{result._source["published.name"]}</TableCell>
-                    <TableCell>{result._source["published.type"]}</TableCell>
-                    <TableCell>
-                      {result._source["published.releasedate"]}
-                    </TableCell>
-                    <TableCell>
-                      {result._source["published.category"]}
-                    </TableCell>
-                    <TableCell>
-                      {result._source["published.functionsubfn"]}
-                    </TableCell>
+          <>
+            <Typography sx={{ mt: 2 }}>
+              There were{" "}
+              <span style={{ color: theme.palette.kyoPurple.main, fontWeight: "bold" }}>
+                {searchResults.length} matches found
+              </span>
+            </Typography>
+            <TableContainer sx={{ mt: 4, boxShadow: "0px 2px 2px 1px rgba(0, 0, 0, 0.1)" }}>
+              <Table>
+                <TableHead sx={{ background: theme.palette.kyoPurple.main, color: "white" }}>
+                  <TableRow>
+                    <TableCell sx={{ color: "white", fontWeight: "bold" }}>Document Name</TableCell>
+                    <TableCell sx={{ color: "white", fontWeight: "bold" }}>Type</TableCell>
+                    <TableCell sx={{ color: "white", fontWeight: "bold" }}>Release Date</TableCell>
+                    <TableCell sx={{ color: "white", fontWeight: "bold" }}>Categories</TableCell>
+                    <TableCell sx={{ color: "white", fontWeight: "bold" }}>Functionsubfn</TableCell>
                   </TableRow>
-                ))}
-              </TableBody>
-            </Table>
-          </TableContainer>
+                </TableHead>
+                <TableBody>
+                  {searchResults.map((result) => (
+                    <TableRow
+                      key={result._id}
+                      hover
+                      onClick={() => handleRowClick(result._source["published.type"], result._id)}
+                      style={{ cursor: "pointer" }}
+                    >
+                      <TableCell>{result._source["published.name"] || "N/A"}</TableCell>
+                      <TableCell>{result._source["published.type"] || "N/A"}</TableCell>
+                      <TableCell>{formatDate(result._source["published.releasedate"])}</TableCell>
+                      <TableCell>{result._source["published.category"]?.join(", ") || "N/A"}</TableCell>
+                      <TableCell>{result._source["published.functionsubfn"]?.join(", ") || "N/A"}</TableCell>
+                    </TableRow>
+                  ))}
+                </TableBody>
+              </Table>
+            </TableContainer>
+          </>
         )}
-
-        {/* Show a message if no results are found */}
         {searchResults.length === 0 && searchTerm && (
           <Typography sx={{ mt: 2 }}>No results found.</Typography>
         )}

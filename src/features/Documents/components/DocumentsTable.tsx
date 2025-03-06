@@ -10,10 +10,20 @@ import {
   TableSortLabel,
 } from "@mui/material";
 
+
 interface DocumentsTableProps {
   filteredDocuments: Document[];
   handleRowClick: (doc: Document) => void;
 }
+
+// Utility function to format the date as dd-mm-yyyy
+const formatDate = (dateString: string): string => {
+  const date = new Date(dateString);
+  const day = String(date.getDate()).padStart(2, '0');
+  const month = String(date.getMonth() + 1).padStart(2, '0'); // Months are zero-based
+  const year = date.getFullYear();
+  return `${day}-${month}-${year}`;
+};
 
 function DocumentsTable({
   filteredDocuments,
@@ -141,7 +151,7 @@ function DocumentsTable({
               <TableCell>{doc.data.name}</TableCell>
               <TableCell>{doc.data.type}</TableCell>
 
-              <TableCell>{doc.data.releasedate}</TableCell>
+              <TableCell>{formatDate(doc.data.releasedate)}</TableCell>
 
               <TableCell>{doc.data.category.join(", ")}</TableCell>
               <TableCell>{doc.data.functionsubfn.join(", ")}</TableCell>
