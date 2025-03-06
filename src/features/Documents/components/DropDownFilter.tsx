@@ -94,6 +94,7 @@ export default function DropDownFilter({
         onClick={handleOpen}
         sx={{
           background: "#6e3cbe",
+          fontWeight: "bold",
           boxShadow: "1px 2px 3px 2px rgba(0, 0, 0, 0.1)",
           color: "white",
           borderRadius: "10px",

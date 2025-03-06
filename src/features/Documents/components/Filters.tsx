@@ -42,9 +42,11 @@ function Filters({
             marginTop: "3px",
             borderColor: "#6e3cbe",
             color: "#6e3cbe",
+               fontWeight:"bold"
           }}
         >
-          Search In File Contents <ManageSearchIcon sx={{ marginLeft: "7px" }} />{" "}
+          Search In File Contents{" "}
+          <ManageSearchIcon sx={{ marginLeft: "7px" }} />{" "}
         </Button>
         <SearchModal
           open={open}

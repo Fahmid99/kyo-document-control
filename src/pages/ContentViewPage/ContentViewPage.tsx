@@ -143,6 +143,8 @@ function ContentViewPage() {
           borderBottom: "none",
           borderBottomLeftRadius: "0", // Remove bottom-left radius
           borderBottomRightRadius: "0",
+          boxShadow: "0px 2px 2px 1px rgba(0, 0, 0, 0.1)",
+          mb:"1em"
         }}
       >
         <Table>

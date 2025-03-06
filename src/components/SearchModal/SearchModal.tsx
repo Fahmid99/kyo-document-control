@@ -54,26 +54,48 @@ interface SearchResult {
 function SearchModal({ open, handleClose }: SearchModalProps) {
   const [searchTerm, setSearchTerm] = useState("");
   const [searchResults, setSearchResults] = useState<SearchResult[]>([]);
+  const [showNoResults, setShowNoResults] = useState<boolean>(false);
+  const [showEmptyFieldError, setShowEmptyFieldError] = useState<boolean>(false);
   const navigate = useNavigate();
   const theme = useTheme();
 
-  const handleSearchTermChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+  const handleSearchTermChange = (
+    event: React.ChangeEvent<HTMLInputElement>
+  ) => {
     setSearchTerm(event.target.value);
+    setShowEmptyFieldError(false); // Reset error message when user types
   };
 
   const handleSearch = async () => {
+    if (!searchTerm.trim()) {
+      setShowEmptyFieldError(true); // Show error if search term is empty
+      setSearchResults([]); // Clear results
+      setShowNoResults(false); // Hide "No results found" message
+      return; // Exit the function early
+    }
+
     try {
       const response = await docService.getSearchResults(searchTerm);
       console.log("Search response:", response);
 
-      if (response.hits && response.hits.hits) {
-        setSearchResults(response.hits.hits);
+      if (response.hits && response.hits.hits && response.hits.hits.length > 0) {
+        setSearchResults(response.hits.hits); // Update search results
+        setShowNoResults(false); // Hide "No results found" message
       } else {
-        setSearchResults([]);
+        setSearchResults([]); // Clear results
+        setShowNoResults(true); // Show "No results found" message
       }
     } catch (error) {
       console.error("Error fetching search results:", error);
-      setSearchResults([]);
+      setSearchResults([]); // Clear results on error
+      setShowNoResults(true); // Show "No results found" message
+    }
+  };
+
+  // Handle Enter key press
+  const handleKeyDown = (event: React.KeyboardEvent<HTMLInputElement>) => {
+    if (event.key === "Enter") {
+      handleSearch(); // Trigger search when Enter is pressed
     }
   };
 
@@ -128,7 +150,8 @@ function SearchModal({ open, handleClose }: SearchModalProps) {
           <Box sx={{ display: "flex", alignItems: "center" }}>
             <HelpIcon sx={{ color: theme.palette.kyoPurple.main, mr: 1 }} />
             <Typography variant="body1" component="span">
-              Will search for exact word matches in file contents of all documents
+              Will search for exact word matches in file contents of all
+              documents
             </Typography>
           </Box>
         </Box>
@@ -137,8 +160,11 @@ function SearchModal({ open, handleClose }: SearchModalProps) {
             label="Enter search term"
             value={searchTerm}
             onChange={handleSearchTermChange}
+            onKeyDown={handleKeyDown} // Add keydown event handler
             fullWidth
             color="secondary"
+            error={showEmptyFieldError} // Show error state
+            helperText={showEmptyFieldError ? "Please enter a word" : ""} // Display error message
             sx={{
               "& .MuiOutlinedInput-root": {
                 "&.Mui-focused fieldset": {
@@ -159,19 +185,41 @@ function SearchModal({ open, handleClose }: SearchModalProps) {
           <>
             <Typography sx={{ mt: 2 }}>
               There were{" "}
-              <span style={{ color: theme.palette.kyoPurple.main, fontWeight: "bold" }}>
+              <span
+                style={{
+                  color: theme.palette.kyoPurple.main,
+                  fontWeight: "bold",
+                }}
+              >
                 {searchResults.length} matches found
               </span>
             </Typography>
-            <TableContainer sx={{ mt: 4, boxShadow: "0px 2px 2px 1px rgba(0, 0, 0, 0.1)" }}>
+            <TableContainer
+              sx={{ mt: 4, boxShadow: "0px 2px 2px 1px rgba(0, 0, 0, 0.1)" }}
+            >
               <Table>
-                <TableHead sx={{ background: theme.palette.kyoPurple.main, color: "white" }}>
+                <TableHead
+                  sx={{
+                    background: theme.palette.kyoPurple.main,
+                    color: "white",
+                  }}
+                >
                   <TableRow>
-                    <TableCell sx={{ color: "white", fontWeight: "bold" }}>Document Name</TableCell>
-                    <TableCell sx={{ color: "white", fontWeight: "bold" }}>Type</TableCell>
-                    <TableCell sx={{ color: "white", fontWeight: "bold" }}>Release Date</TableCell>
-                    <TableCell sx={{ color: "white", fontWeight: "bold" }}>Categories</TableCell>
-                    <TableCell sx={{ color: "white", fontWeight: "bold" }}>Functionsubfn</TableCell>
+                    <TableCell sx={{ color: "white", fontWeight: "bold" }}>
+                      Document Name
+                    </TableCell>
+                    <TableCell sx={{ color: "white", fontWeight: "bold" }}>
+                      Type
+                    </TableCell>
+                    <TableCell sx={{ color: "white", fontWeight: "bold" }}>
+                      Release Date
+                    </TableCell>
+                    <TableCell sx={{ color: "white", fontWeight: "bold" }}>
+                      Categories
+                    </TableCell>
+                    <TableCell sx={{ color: "white", fontWeight: "bold" }}>
+                      Functionsubfn
+                    </TableCell>
                   </TableRow>
                 </TableHead>
                 <TableBody>
@@ -179,14 +227,32 @@ function SearchModal({ open, handleClose }: SearchModalProps) {
                     <TableRow
                       key={result._id}
                       hover
-                      onClick={() => handleRowClick(result._source["published.type"], result._id)}
+                      onClick={() =>
+                        handleRowClick(
+                          result._source["published.type"],
+                          result._id
+                        )
+                      }
                       style={{ cursor: "pointer" }}
                     >
-                      <TableCell>{result._source["published.name"] || "N/A"}</TableCell>
-                      <TableCell>{result._source["published.type"] || "N/A"}</TableCell>
-                      <TableCell>{formatDate(result._source["published.releasedate"])}</TableCell>
-                      <TableCell>{result._source["published.category"]?.join(", ") || "N/A"}</TableCell>
-                      <TableCell>{result._source["published.functionsubfn"]?.join(", ") || "N/A"}</TableCell>
+                      <TableCell>
+                        {result._source["published.name"] || "N/A"}
+                      </TableCell>
+                      <TableCell>
+                        {result._source["published.type"] || "N/A"}
+                      </TableCell>
+                      <TableCell>
+                        {formatDate(result._source["published.releasedate"])}
+                      </TableCell>
+                      <TableCell>
+                        {result._source["published.category"]?.join(", ") ||
+                          "N/A"}
+                      </TableCell>
+                      <TableCell>
+                        {result._source["published.functionsubfn"]?.join(
+                          ", "
+                        ) || "N/A"}
+                      </TableCell>
                     </TableRow>
                   ))}
                 </TableBody>
@@ -194,7 +260,7 @@ function SearchModal({ open, handleClose }: SearchModalProps) {
             </TableContainer>
           </>
         )}
-        {searchResults.length === 0 && searchTerm && (
+        {showNoResults && searchResults.length === 0 && (
           <Typography sx={{ mt: 2 }}>No results found.</Typography>
         )}
       </Box>
