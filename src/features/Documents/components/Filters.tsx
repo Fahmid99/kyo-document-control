@@ -45,7 +45,7 @@ function Filters({
                fontWeight:"bold"
           }}
         >
-          Search In File Contents{" "}
+          Search by Content
           <ManageSearchIcon sx={{ marginLeft: "7px" }} />{" "}
         </Button>
         <SearchModal
@@ -54,7 +54,7 @@ function Filters({
           documents={documents}
         />
         <TextField
-          placeholder="Search by Document Name"
+          placeholder="Search by Title"
           variant="outlined"
           size="small"
           value={searchQuery}

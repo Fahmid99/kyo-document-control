@@ -23,6 +23,9 @@ function DocumentsPage() {
   const [searchQuery, setSearchQuery] = useState("");
   const navigate = useNavigate();
 
+
+  console.log(category)
+  
   useEffect(() => {
     const getDocuments = async () => {
       try {

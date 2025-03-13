@@ -143,7 +143,7 @@ function SearchModal({ open, handleClose }: SearchModalProps) {
         }}
       >
         <Typography id="modal-modal-title" variant="h6" component="h2">
-          Search in file contents of documents
+          Search in the content of documents
         </Typography>
         <Divider />
         <Box sx={{ padding: "1em 1em 1em 0em" }}>

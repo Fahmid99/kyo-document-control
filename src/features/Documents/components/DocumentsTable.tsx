@@ -10,19 +10,20 @@ import {
   TableSortLabel,
 } from "@mui/material";
 
-
 interface DocumentsTableProps {
   filteredDocuments: Document[];
   handleRowClick: (doc: Document) => void;
 }
 
+
+
 // Utility function to format the date as dd-mm-yyyy
 const formatDate = (dateString: string): string => {
   const date = new Date(dateString);
-  const day = String(date.getDate()).padStart(2, '0');
-  const month = String(date.getMonth() + 1).padStart(2, '0'); // Months are zero-based
-  const year = date.getFullYear();
-  return `${day}-${month}-${year}`;
+  const day = String(date.getDate()).padStart(2, "0"); // Ensure two digits for day
+  const month = date.toLocaleString("default", { month: "short" }); // Get short month name (e.g., Oct)
+  const year = date.getFullYear(); // Get full year
+  return `${day}-${month}-${year}`; // Format as DD-MMM-YYYY
 };
 
 function DocumentsTable({
@@ -49,10 +50,11 @@ function DocumentsTable({
   });
 
   return (
-    <TableContainer sx={{boxShadow: "0px 2px 2px 1px rgba(0, 0, 0, 0.1)"}}>
+    <TableContainer sx={{ boxShadow: "0px 2px 2px 1px rgba(0, 0, 0, 0.1)" }}>
       <Table>
         <TableHead sx={{ background: "#6e3cbe", color: "white" }}>
           <TableRow>
+            {/* Name Column */}
             <TableCell
               sx={{ color: "white", fontWeight: "bold", fontSize: "16px" }}
             >
@@ -76,6 +78,8 @@ function DocumentsTable({
                 Name
               </TableSortLabel>
             </TableCell>
+
+            {/* Type Column */}
             <TableCell
               sx={{ color: "white", fontWeight: "bold", fontSize: "16px" }}
             >
@@ -100,6 +104,21 @@ function DocumentsTable({
               </TableSortLabel>
             </TableCell>
 
+            {/* Function Column */}
+            <TableCell
+              sx={{ color: "white", fontWeight: "bold", fontSize: "16px" }}
+            >
+              Function
+            </TableCell>
+
+            {/* Category Column */}
+            <TableCell
+              sx={{ color: "white", fontWeight: "bold", fontSize: "16px" }}
+            >
+              Category
+            </TableCell>
+
+            {/* Release Date Column */}
             <TableCell
               sx={{ color: "white", fontWeight: "bold", fontSize: "16px" }}
             >
@@ -123,17 +142,6 @@ function DocumentsTable({
                 Release Date
               </TableSortLabel>
             </TableCell>
-
-            <TableCell
-              sx={{ color: "white", fontWeight: "bold", fontSize: "16px" }}
-            >
-              Categories
-            </TableCell>
-            <TableCell
-              sx={{ color: "white", fontWeight: "bold", fontSize: "16px" }}
-            >
-              Functionsubfn
-            </TableCell>
           </TableRow>
         </TableHead>
         <TableBody>
@@ -148,13 +156,20 @@ function DocumentsTable({
               }}
               onClick={() => handleRowClick(doc)}
             >
+              {/* Name */}
               <TableCell>{doc.data.name}</TableCell>
+
+              {/* Type */}
               <TableCell>{doc.data.type}</TableCell>
 
-              <TableCell>{formatDate(doc.data.releasedate)}</TableCell>
+              {/* Function */}
+              <TableCell>{(doc.data.functionsubfn ?? []).join(", ")}</TableCell>
 
-              <TableCell>{doc.data.category.join(", ")}</TableCell>
-              <TableCell>{doc.data.functionsubfn.join(", ")}</TableCell>
+              {/* Category */}
+              <TableCell>{(doc.data.category ?? []).join(", ")}</TableCell>
+
+              {/* Release Date */}
+              <TableCell>{formatDate(doc.data.releasedate)}</TableCell>
             </TableRow>
           ))}
         </TableBody>
