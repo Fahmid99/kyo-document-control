@@ -1,4 +1,4 @@
-import { useState } from "react";
+import React, { useState } from "react";
 import {
   Box,
   Button,
@@ -22,27 +22,28 @@ const listStyle = {
   padding: "8px",
   width: "500px",
 };
-
-export default function DropDownFilter({
+const DropDownFilter = React.memo(({
   filterObj,
   handleFilterChange,
   filterQuery,
-  setfilterQuery,
-}) {
+  setFilterQuery,
+}) => {
   const [anchorEl, setAnchorEl] = useState(null);
   const [searchTerm, setSearchTerm] = useState("");
-  const [selectedTags, setSelectedTags] = useState([]);
-  const tags = filterObj?.data || [];
+  const [selectedTags, setSelectedTags] = useState(filterQuery[filterObj.keyName] || []);
 
   const handleOpen = (event) => setAnchorEl(event.currentTarget);
-  const handleClose = () => setAnchorEl(null);
+  const handleClose = () => {
+    setAnchorEl(null); // Just close the menu
+  };
 
   const handleClear = (e) => {
     e.stopPropagation();
     const updatedQuery = { ...filterQuery };
     delete updatedQuery[filterObj.keyName];
     setSelectedTags([]);
-    setfilterQuery(updatedQuery);
+    setFilterQuery(updatedQuery);
+    handleFilterChange(updatedQuery);
   };
 
   const handleSearchChange = (event) => setSearchTerm(event.target.value);
@@ -50,35 +51,23 @@ export default function DropDownFilter({
   const handleToggle = (tag) => {
     setSelectedTags((prevSelectedTags) => {
       const tagsIncluded = prevSelectedTags.includes(tag);
-      return tagsIncluded
+      const updatedTags = tagsIncluded
         ? prevSelectedTags.filter((t) => t !== tag)
         : [...prevSelectedTags, tag];
-    });
 
-    setfilterQuery((prevQuery) => {
-      const updatedQuery = { ...prevQuery };
-
-      if (!selectedTags.includes(tag)) {
-        if (!updatedQuery[filterObj.keyName]) {
-          updatedQuery[filterObj.keyName] = [tag];
-        } else {
-          updatedQuery[filterObj.keyName].push(tag);
-        }
-      } else {
-        updatedQuery[filterObj.keyName] = updatedQuery[
-          filterObj.keyName
-        ].filter((t) => t !== tag);
-      }
-
-      if (updatedQuery[filterObj.keyName].length === 0) {
+      // Update filterQuery immediately
+      const updatedQuery = { ...filterQuery, [filterObj.keyName]: updatedTags };
+      if (updatedTags.length === 0) {
         delete updatedQuery[filterObj.keyName];
       }
+      setFilterQuery(updatedQuery);
+      handleFilterChange(updatedQuery);
 
-      return updatedQuery;
+      return updatedTags;
     });
   };
 
-  const filteredTags = tags.filter((tag) =>
+  const filteredTags = filterObj.data.filter((tag) =>
     tag.toLowerCase().includes(searchTerm.toLowerCase())
   );
 
@@ -104,7 +93,7 @@ export default function DropDownFilter({
           margin: "5px",
         }}
       >
-        {filterObj.name == "Categories" ? (
+        {filterObj.name === "Categories" ? (
           <CategoryIcon sx={{ margin: "0.1em" }} />
         ) : (
           <TagsIcon sx={{ margin: "0.1em" }} />
@@ -148,11 +137,7 @@ export default function DropDownFilter({
         }}
       >
         <Box sx={{ p: 2 }}>
-          <Box
-            display="flex"
-            justifyContent="space-between"
-            alignItems="center"
-          >
+          <Box display="flex" justifyContent="space-between" alignItems="center">
             <Typography variant="h6" component="h2">
               {filterObj.name}
             </Typography>
@@ -223,4 +208,6 @@ export default function DropDownFilter({
       </Menu>
     </div>
   );
-}
+});
+
+export default DropDownFilter;

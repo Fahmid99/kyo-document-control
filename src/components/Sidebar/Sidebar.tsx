@@ -61,7 +61,7 @@ const DrawerContent = ({ open, handleClick }) => {
           <ListItemIcon>
             <HomeIcon />
           </ListItemIcon>
-          <ListItemText primary="Inbox" />
+          <ListItemText primary="Home" />
         </ListItemButton>
 
         {/* All Documents Section */}
@@ -80,17 +80,24 @@ const DrawerContent = ({ open, handleClick }) => {
         </ListItemButton>
         <Collapse in={true} timeout="auto" unmountOnExit>
           <List component="div" disablePadding>
+            {/* Combined Policies & Procedures Section */}
             <ListItemButton
               component={Link}
-              to="/documents/policies"
+              to="/documents/policies-and-procedures"
               sx={{ ...listItemButtonStyles, pl: 4 }}
-              selected={location.pathname === "/documents/policies"}
+              selected={
+                location.pathname === "/documents/policies-and-procedures" ||
+                location.pathname === "/documents/policies" ||
+                location.pathname === "/documents/procedures"
+              }
             >
               <ListItemIcon>
                 <PolicyIcon />
               </ListItemIcon>
-              <ListItemText primary="Policies" />
+              <ListItemText primary="Policies & Procedures" />
             </ListItemButton>
+
+            {/* Forms Section */}
             <ListItemButton
               component={Link}
               to="/documents/forms"
@@ -101,17 +108,6 @@ const DrawerContent = ({ open, handleClick }) => {
                 <ArticleIcon />
               </ListItemIcon>
               <ListItemText primary="Forms" />
-            </ListItemButton>
-            <ListItemButton
-              component={Link}
-              to="/documents/procedures"
-              sx={{ ...listItemButtonStyles, pl: 4 }}
-              selected={location.pathname === "/documents/procedures"}
-            >
-              <ListItemIcon>
-                <ProcedureIcon />
-              </ListItemIcon>
-              <ListItemText primary="Procedures" />
             </ListItemButton>
           </List>
         </Collapse>

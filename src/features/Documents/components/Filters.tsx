@@ -6,12 +6,11 @@ import DropDownFilter from "./DropDownFilter";
 import ManageSearchIcon from "@mui/icons-material/ManageSearch";
 import SearchModal from "../../../components/SearchModal/SearchModal";
 import React from "react";
-
 function Filters({
   filterButtons,
   handleFilterChange,
   filterQuery,
-  setfilterQuery,
+  setfilterQuery, // This is the prop name in the parent component
   handleSearchChange,
   searchQuery,
   documents,
@@ -28,7 +27,7 @@ function Filters({
             filterObj={filterObj}
             handleFilterChange={handleFilterChange}
             filterQuery={filterQuery}
-            setfilterQuery={setfilterQuery}
+            setFilterQuery={setfilterQuery} // Pass the prop with the correct name
           />
         </div>
       ))}
@@ -42,7 +41,7 @@ function Filters({
             marginTop: "3px",
             borderColor: "#6e3cbe",
             color: "#6e3cbe",
-               fontWeight:"bold"
+            fontWeight: "bold",
           }}
         >
           Search by Content

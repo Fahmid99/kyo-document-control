@@ -50,7 +50,7 @@ function DocumentsTable({
   });
 
   return (
-    <TableContainer sx={{ boxShadow: "0px 2px 2px 1px rgba(0, 0, 0, 0.1)" }}>
+    <TableContainer sx={{ boxShadow: "0px 2px 4px 1px rgba(0, 0, 0, 0.1)" }}>
       <Table>
         <TableHead sx={{ background: "#6e3cbe", color: "white" }}>
           <TableRow>
