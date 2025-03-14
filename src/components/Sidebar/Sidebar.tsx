@@ -20,7 +20,7 @@ import ArticleIcon from "@mui/icons-material/Article";
 import HelpIcon from "@mui/icons-material/Help";
 import ProcedureIcon from '@mui/icons-material/FormatListBulleted';
 
-const drawerWidth = 240;
+const drawerWidth = 280;
 
 // Style object for ListItemButton
 const listItemButtonStyles = {
