@@ -8,13 +8,17 @@ dotenv.config();
 
 const app: Application = express();
 
-app.use((req, res, next) => {
-  const host = req.headers.host;
-  cors({
-    origin: `http://${host}`,
-    credentials: true,
-  })(req, res, next);
-});
+const allowedOrigins = [`http://${process.env.ALLOWED_HOST}`];
+
+app.use(cors({
+  origin: function (origin, callback) {
+    if (!origin || allowedOrigins.indexOf(origin) !== -1) {
+      callback(null, true);
+    } else {
+      callback(new Error('Not allowed by CORS'));
+    }
+  }
+}));
 
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
