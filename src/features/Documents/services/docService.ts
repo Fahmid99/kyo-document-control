@@ -1,7 +1,7 @@
 import { getFilterData } from "./../../../../server/controllers/documentController";
 import axios from "axios";
 
-const API_BASE_URL = "http://localhost:4001/api";
+const API_BASE_URL = `http://${window.location.hostname}:4001/api`;
 
 const getDocuments = async () => {
   try {

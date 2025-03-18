@@ -8,12 +8,13 @@ dotenv.config();
 
 const app: Application = express();
 
-app.use(
+app.use((req, res, next) => {
+  const host = req.headers.host;
   cors({
-    origin: "http://localhost:5173",
+    origin: `http://${host}`,
     credentials: true,
-  })
-);
+  })(req, res, next);
+});
 
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
