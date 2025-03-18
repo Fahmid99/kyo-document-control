@@ -33,9 +33,12 @@ const getDocumentById = async (id: string) => {
   }
 };
 
-const getDocumentDownload = async (id: string) => {
+const getDocumentDownload = async (id: string, downloadType: string) => {
   try {
     const response = await axios.get(`${API_BASE_URL}/documentdownload/${id}`, {
+      params: {
+        type: downloadType, // Pass downloadType as a query parameter
+      },
       responseType: "blob", // Treat the response as a Blob
     });
     return response;

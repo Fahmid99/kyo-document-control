@@ -70,7 +70,7 @@ const DrawerContent = ({ open, handleClick }) => {
           sx={listItemButtonStyles}
           component={Link}
           to="/documents"
-          selected={location.pathname.startsWith("/documents")}
+          selected={location.pathname === "/documents"} // Only highlight if exact match
         >
           <ListItemIcon>
             <ArticleIcon />
@@ -78,6 +78,8 @@ const DrawerContent = ({ open, handleClick }) => {
           <ListItemText primary="All Documents" />
           {open ? <ExpandLess /> : <ExpandMore />}
         </ListItemButton>
+
+        {/* Collapsible Section for Sub-Routes */}
         <Collapse in={true} timeout="auto" unmountOnExit>
           <List component="div" disablePadding>
             {/* Combined Policies & Procedures Section */}
@@ -131,10 +133,8 @@ const DrawerContent = ({ open, handleClick }) => {
 };
 
 export default function ClippedDrawer() {
-  const [open, setOpen] = React.useState(false);
-
   const handleClick = () => {
-    setOpen(!open);
+    // Handle click logic if needed
   };
 
   return (
@@ -169,7 +169,7 @@ export default function ClippedDrawer() {
         }}
       >
         <Toolbar />
-        <DrawerContent open={open} handleClick={handleClick} />
+        <DrawerContent handleClick={handleClick} open={undefined} /> {/* Removed `open` prop */}
       </Drawer>
       <Box component="main" sx={{ flexGrow: 1, p: 3 }}>
         <Toolbar />

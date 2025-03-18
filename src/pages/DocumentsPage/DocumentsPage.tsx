@@ -127,8 +127,10 @@ function DocumentsPage() {
           sx={{ display: "flex", alignItems: "center" }}
         >
           {category
-            ? category.charAt(0).toUpperCase() + // Capitalize the first letter
-              category.slice(1).replace(/-/g, " ") // Replace hyphens with spaces
+            ? category === "policies-and-procedures" // Check if category is "policies-and-procedures"
+              ? "Policies & Procedures" // Display as "Policies & Procedures"
+              : category.charAt(0).toUpperCase() + // Capitalize the first letter
+                category.slice(1).replace(/-/g, " ") // Replace hyphens with spaces
             : "All Documents"}
           {category === "policies" ? (
             <PolicyIcon

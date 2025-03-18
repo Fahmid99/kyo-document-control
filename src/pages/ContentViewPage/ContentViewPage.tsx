@@ -20,6 +20,7 @@ function ContentViewPage() {
   const { id } = useParams<{ id: string }>();
   const [pdfUrl, setPdfUrl] = useState<string | null>(null);
   const [documentData, setDocumentData] = useState<Document | null>(null);
+  const [downloadType, setDownloadType] = useState<string>("");
   useEffect(() => {
     const getDocumentContent = async () => {
       try {
@@ -55,7 +56,14 @@ function ContentViewPage() {
           console.error("No ID found in the URL");
           return;
         }
+
         const response = await docService.getDocumentById(id);
+        console.log(response);
+        if (response.data.downloadoriginalformat !== true) {
+          setDownloadType("PDF");
+        } else {
+          setDownloadType("");
+        }
         setDocumentData(response);
         console.log(response);
       } catch (error) {
@@ -66,6 +74,15 @@ function ContentViewPage() {
     getDocumentContent();
     getDocumentById();
   }, [id]);
+  console.log(downloadType);
+
+  const formatDate = (dateString: string): string => {
+    const date = new Date(dateString);
+    const day = String(date.getDate()).padStart(2, "0"); // Ensure two digits for day
+    const month = date.toLocaleString("default", { month: "short" }); // Get short month name (e.g., Oct)
+    const year = date.getFullYear(); // Get full year
+    return `${day}-${month}-${year}`; // Format as DD-MMM-YYYY
+  };
 
   const handleDownloadClick = async () => {
     try {
@@ -75,7 +92,8 @@ function ContentViewPage() {
       }
 
       // Fetch the file from the backend
-      const response = await docService.getDocumentDownload(id);
+
+      const response = await docService.getDocumentDownload(id, downloadType);
 
       // Create a Blob URL for the file
       const blobUrl = window.URL.createObjectURL(response.data);
@@ -109,7 +127,7 @@ function ContentViewPage() {
   };
 
   return (
-    <div>
+    <div style={{ height: " 90vh" }}>
       {/* Heading */}
       <Box display="flex" justifyContent="space-between" alignItems="center">
         <Typography variant="h4" gutterBottom>
@@ -122,7 +140,7 @@ function ContentViewPage() {
             color="secondary"
             sx={{ borderWidth: "2px", borderColor: "#282828", marginRight: 2 }}
           >
-            Download Original File
+            Download Document
           </Button>
           <Button
             onClick={handleOpenInNewTab}
@@ -144,7 +162,7 @@ function ContentViewPage() {
           borderBottomLeftRadius: "0", // Remove bottom-left radius
           borderBottomRightRadius: "0",
           boxShadow: "0px 2px 2px 1px rgba(0, 0, 0, 0.1)",
-          mb:"1em"
+          mb: "1em",
         }}
       >
         <Table>
@@ -156,20 +174,16 @@ function ContentViewPage() {
               <TableCell sx={{ fontWeight: "bold", color: "white" }}>
                 Type
               </TableCell>
-              <TableCell sx={{ fontWeight: "bold", color: "white" }}>
-                Published Date
-              </TableCell>
+
               <TableCell sx={{ fontWeight: "bold", color: "white" }}>
                 Release Date
               </TableCell>
-              <TableCell sx={{ fontWeight: "bold", color: "white" }}>
-                Review Date
-              </TableCell>
+
               <TableCell sx={{ fontWeight: "bold", color: "white" }}>
                 Categories
               </TableCell>
               <TableCell sx={{ fontWeight: "bold", color: "white" }}>
-                Functionsubfn
+              Release Date
               </TableCell>
             </TableRow>
           </TableHead>
@@ -177,12 +191,15 @@ function ContentViewPage() {
             <TableRow>
               <TableCell>{documentData?.name}</TableCell>
               <TableCell>{documentData?.data.type}</TableCell>
-              <TableCell>{documentData?.data.publishdate}</TableCell>
-              <TableCell>{documentData?.data.releasedate}</TableCell>
-              <TableCell>{documentData?.data.reviewdate}</TableCell>
-              <TableCell>{documentData?.data.category.join(", ")}</TableCell>
+
               <TableCell>
                 {documentData?.data.functionsubfn.join(", ")}
+              </TableCell>
+
+              <TableCell>{documentData?.data.category.join(", ")}</TableCell>
+
+              <TableCell>
+                {formatDate(documentData?.data.releasedate)}
               </TableCell>
             </TableRow>
           </TableBody>
@@ -194,7 +211,7 @@ function ContentViewPage() {
         <iframe
           src={pdfUrl}
           width="100%"
-          height="600px"
+          height="80%"
           title="Document Content"
         />
       )}

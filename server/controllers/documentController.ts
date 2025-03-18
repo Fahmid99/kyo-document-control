@@ -93,10 +93,10 @@ export const getDocumentById = async (req: Request, res: Response) => {
 export const getDocumentDownload = async (req: Request, res: Response) => {
   try {
     const { id } = req.params;
-
+    const { type } = req.query
     // Make a request to the external API
     const response = await axios.get(
-      `${URL}dms/${id}/content?type=sysobject&version=-1&index=0&asdownload=true&recyclebin=false`,
+      `${URL}dms/${id}/content?type=sysobject&version=-1&index=0&asdownload=true&recyclebin=false&rendition=${type}`,
       {
         headers: {
           Authorization: auth,
