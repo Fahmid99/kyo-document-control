@@ -4,7 +4,7 @@ import Box from "@mui/material/Box";
 
 export default function HelpContent() {
   return (
-    <Box sx={{ p: 3 }}>
+    <Box sx={{ p:1}}>
       {/* Heading */}
       <Typography variant="h4" sx={{ fontWeight: "bold", mb: 3 }}>
         Help Center
@@ -52,11 +52,10 @@ export default function HelpContent() {
         section.
       </Typography>
       <Typography variant="body1" sx={{ mb: 2 }}>
-        2. Click on the document you want to view. It will open in a new tab.
+        2. Click on the document you want to view. It will navigate to the PDF viewer.
       </Typography>
       <Typography variant="body1" sx={{ mb: 2 }}>
-        3. Use your browser’s built-in PDF viewer to read or download the
-        document.
+        3. Use your browser’s built-in PDF viewer to read or click on "Open to new tab" to have a fullscreen view of the PDF.
       </Typography>
       <Typography variant="body1" sx={{ mb: 3 }}>
         4. If you encounter any issues, ensure your browser supports PDF viewing

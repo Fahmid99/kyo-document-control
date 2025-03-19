@@ -57,6 +57,7 @@ const DrawerContent = ({ open, handleClick }) => {
           to="/"
           sx={listItemButtonStyles}
           selected={location.pathname === "/"}
+          disabled
         >
           <ListItemIcon>
             <HomeIcon />
