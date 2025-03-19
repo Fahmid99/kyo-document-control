@@ -19,7 +19,7 @@ import PolicyIcon from "@mui/icons-material/Policy";
 import ArticleIcon from "@mui/icons-material/Article";
 import HelpIcon from "@mui/icons-material/Help";
 import ProcedureIcon from '@mui/icons-material/FormatListBulleted';
-
+import FolderIcon from '@mui/icons-material/Folder';
 const drawerWidth = 280;
 
 // Style object for ListItemButton
@@ -74,7 +74,7 @@ const DrawerContent = ({ open, handleClick }) => {
           selected={location.pathname === "/documents"} // Only highlight if exact match
         >
           <ListItemIcon>
-            <ArticleIcon />
+            <FolderIcon />
           </ListItemIcon>
           <ListItemText primary="All Documents" />
           {open ? <ExpandLess /> : <ExpandMore />}

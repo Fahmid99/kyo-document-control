@@ -127,10 +127,10 @@ function ContentViewPage() {
   };
 
   return (
-    <div style={{ height: " 90vh" }}>
+    <div style={{ height: "75vh" }}>
       {/* Heading */}
       <Box display="flex" justifyContent="space-between" alignItems="center">
-        <Typography variant="h4" gutterBottom>
+        <Typography variant="h4" gutterBottom fontWeight={"600"} color="#212121">
           {documentData?.name || "No Name Available"}
         </Typography>
         <Box>
@@ -211,7 +211,7 @@ function ContentViewPage() {
         <iframe
           src={pdfUrl}
           width="100%"
-          height="80%"
+          height="85%"
           title="Document Content"
         />
       )}

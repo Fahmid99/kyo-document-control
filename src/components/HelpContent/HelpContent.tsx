@@ -4,7 +4,7 @@ import Box from "@mui/material/Box";
 
 export default function HelpContent() {
   return (
-    <Box sx={{ p:1}}>
+    <Box sx={{}}>
       {/* Heading */}
       <Typography variant="h4" sx={{ fontWeight: "bold", mb: 3 }}>
         Help Center
@@ -15,8 +15,8 @@ export default function HelpContent() {
         Navigating the Website
       </Typography>
       <Typography variant="body1" sx={{ mb: 3 }}>
-        Welcome to the Document Control website! Here’s how you can navigate and
-        find the documents you need:
+        Welcome to Kyocera's Document Repository website! Here’s how you can
+        navigate and find the documents you need:
       </Typography>
       <Typography variant="body1" sx={{ mb: 2 }}>
         <strong>1. Home:</strong> The Home page provides an overview of the
@@ -28,16 +28,16 @@ export default function HelpContent() {
         forms, and other resources.
       </Typography>
       <Typography variant="body1" sx={{ mb: 2 }}>
-        <strong>3. Policies:</strong> Access all company policies in PDF format.
-        Click on a policy to view or download it.
+        <strong>3. Policies & Procedures:</strong> Access all company policies
+        in PDF format. Click on a policy to view or download it.
       </Typography>
       <Typography variant="body1" sx={{ mb: 2 }}>
         <strong>4. Forms:</strong> Find and download forms for various
-        processes. Forms are available in PDF and editable formats.
+        processes. Forms are available in different editable formats.
       </Typography>
-      <Typography variant="body1" sx={{ mb: 3 }}>
-        <strong>5. Help:</strong> If you need assistance, visit the Help section
-        for guides and support.
+      <Typography variant="body1" sx={{ mb: 2 }}>
+        <strong>5. Filtering:</strong> Use the filters to narrow down a search
+        using the categories filter or function filters.
       </Typography>
 
       {/* Section 2: Viewing PDFs */}
@@ -49,17 +49,17 @@ export default function HelpContent() {
       </Typography>
       <Typography variant="body1" sx={{ mb: 2 }}>
         1. Navigate to the <strong>Policies</strong> or <strong>Forms</strong>{" "}
-        section.
+        section. Click on the document you want to view. It will navigate to the
+        PDF viewer.
       </Typography>
+
       <Typography variant="body1" sx={{ mb: 2 }}>
-        2. Click on the document you want to view. It will navigate to the PDF viewer.
-      </Typography>
-      <Typography variant="body1" sx={{ mb: 2 }}>
-        3. Use your browser’s built-in PDF viewer to read or click on "Open to new tab" to have a fullscreen view of the PDF.
+        3. Use your browser’s built-in PDF viewer to read or click on "Open to
+        new tab" to have a fullscreen view of the PDF.
       </Typography>
       <Typography variant="body1" sx={{ mb: 3 }}>
-        4. If you encounter any issues, ensure your browser supports PDF viewing
-        or download a PDF reader.
+        4. You can also download the PDF as it's original format depending on
+        its configurations.
       </Typography>
 
       {/* Section 3: Additional Information */}
@@ -67,8 +67,14 @@ export default function HelpContent() {
         Additional Information
       </Typography>
       <Typography variant="body1" sx={{ mb: 2 }}>
-        <strong>Search Functionality:</strong> Use the search bar to quickly find
-        specific documents by name or keyword.
+        <strong>Search By Name:</strong> Use the search bar to quickly find
+        specific documents by name.
+      </Typography>
+      <Typography variant="body1" sx={{ mb: 2 }}>
+        <strong>Search By Content:</strong> Use the search by content feature to
+        search through content's of documents using a exact word match. It will
+        display the results in a table if any documents contain that word inside
+        their content.
       </Typography>
       <Typography variant="body1" sx={{ mb: 2 }}>
         <strong>Downloading Documents:</strong> Most documents can be downloaded
@@ -76,9 +82,9 @@ export default function HelpContent() {
         "Save As."
       </Typography>
       <Typography variant="body1" sx={{ mb: 2 }}>
-        <strong>Need Help?</strong> If you have any questions or need further
-        assistance, please contact the support team at{" "}
-        <strong>support@documentcontrol.com</strong>.
+        <strong>Need Help?</strong> If you encounter any issues or bugs please
+        contact the support team at{" "}
+        <strong>BusinessSolutions@dau.kyocera.com</strong>.
       </Typography>
     </Box>
   );

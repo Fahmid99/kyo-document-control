@@ -7,6 +7,7 @@ import Filters from "../../features/Documents/components/Filters";
 import PolicyIcon from "@mui/icons-material/Policy";
 import ArticleIcon from "@mui/icons-material/Article";
 import DescriptionIcon from "@mui/icons-material/Description"; // For "All Documents"
+import FolderIcon from "@mui/icons-material/Folder";
 
 // Mapping object to convert URL categories to document types
 const categoryToTypeMap = {
@@ -124,7 +125,12 @@ function DocumentsPage() {
         <Typography
           variant="h4"
           gutterBottom
-          sx={{ display: "flex", alignItems: "center" }}
+          sx={{
+            display: "flex",
+            alignItems: "center",
+          }}
+          fontWeight={"600"}
+          color="#212121"
         >
           {category
             ? category === "policies-and-procedures" // Check if category is "policies-and-procedures"
@@ -132,14 +138,23 @@ function DocumentsPage() {
               : category.charAt(0).toUpperCase() + // Capitalize the first letter
                 category.slice(1).replace(/-/g, " ") // Replace hyphens with spaces
             : "All Documents"}
-          {category === "policies" ? (
+          {category === "policies-and-procedures" ? (
             <PolicyIcon
-              sx={{ fontSize: "1em", marginLeft: "10px", background: "282828" }}
+              sx={{
+                fontSize: "1em",
+                marginLeft: "10px",
+                background: "282828",
+                color: "#212121",
+              }}
             />
           ) : category === "forms" ? (
-            <ArticleIcon sx={{ fontSize: "1em", marginLeft: "10px" }} />
+            <ArticleIcon
+              sx={{ fontSize: "1em", marginLeft: "10px", color: "#212121" }}
+            />
           ) : (
-            <DescriptionIcon sx={{ fontSize: "1em", marginLeft: "10px" }} />
+            <FolderIcon
+              sx={{ fontSize: "1em", marginLeft: "10px", color: "#212121", mt:"3px" }}
+            />
           )}
         </Typography>
       </Box>
