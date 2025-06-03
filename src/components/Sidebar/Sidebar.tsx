@@ -18,8 +18,10 @@ import HomeIcon from "@mui/icons-material/Home";
 import PolicyIcon from "@mui/icons-material/Policy";
 import ArticleIcon from "@mui/icons-material/Article";
 import HelpIcon from "@mui/icons-material/Help";
-import ProcedureIcon from '@mui/icons-material/FormatListBulleted';
-import FolderIcon from '@mui/icons-material/Folder';
+import ProcedureIcon from "@mui/icons-material/FormatListBulleted";
+import FolderIcon from "@mui/icons-material/Folder";
+import { Button } from "@mui/material";
+import docService from "../../features/Documents/services/docService";
 const drawerWidth = 280;
 
 // Style object for ListItemButton
@@ -47,7 +49,16 @@ const listItemButtonStyles = {
 // Child component that uses useLocation
 const DrawerContent = ({ open, handleClick }) => {
   const location = useLocation();
-
+  const [docTypes, setDocTypes] = React.useState([]);
+  const handleShowMore = async () => {
+    try {
+      const response = await docService.getDocTypes();
+      setDocTypes(response);
+      console.log(response)
+    } catch (error) {
+      console.error("There was an error fetching document types:", error);
+    }
+  };
   return (
     <Box sx={{ overflow: "auto" }}>
       <List>
@@ -112,6 +123,12 @@ const DrawerContent = ({ open, handleClick }) => {
               </ListItemIcon>
               <ListItemText primary="Forms" />
             </ListItemButton>
+            <ListItemButton
+              onClick={handleShowMore}
+              sx={{ ...listItemButtonStyles, pl: 4 }}
+            >
+              Show More
+            </ListItemButton>
           </List>
         </Collapse>
 
@@ -170,7 +187,12 @@ export default function ClippedDrawer() {
         }}
       >
         <Toolbar />
-        <DrawerContent handleClick={handleClick} open={undefined} /> {/* Removed `open` prop */}
+        <DrawerContent
+          handleClick={handleClick}
+          open={undefined}
+        
+        />{" "}
+        {/* Removed `open` prop */}
       </Drawer>
       <Box component="main" sx={{ flexGrow: 1, p: 3 }}>
         <Toolbar />

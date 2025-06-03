@@ -153,7 +153,12 @@ function DocumentsPage() {
             />
           ) : (
             <FolderIcon
-              sx={{ fontSize: "1em", marginLeft: "10px", color: "#212121", mt:"3px" }}
+              sx={{
+                fontSize: "1em",
+                marginLeft: "10px",
+                color: "#212121",
+                mt: "3px",
+              }}
             />
           )}
         </Typography>

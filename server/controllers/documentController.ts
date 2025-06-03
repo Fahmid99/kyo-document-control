@@ -93,7 +93,7 @@ export const getDocumentById = async (req: Request, res: Response) => {
 export const getDocumentDownload = async (req: Request, res: Response) => {
   try {
     const { id } = req.params;
-    const { type } = req.query
+    const { type } = req.query;
     // Make a request to the external API
     const response = await axios.get(
       `${URL}dms/${id}/content?type=sysobject&version=-1&index=0&asdownload=true&recyclebin=false&rendition=${type}`,
@@ -152,6 +152,36 @@ export const getFilterData = async (req: Request, res: Response) => {
   } catch (error) {
     console.error("Error getting the filter data:", error);
     res.status(500).json({ message: "Failed to get the filter data" });
+  }
+};
+
+export const getDocTypes = async (req: Request, res: Response) => {
+  try {
+    const response = await axios.get(
+      `${URL}system/type/name/published?elements=true&baseparameter=true&embedcs=true&_alllocales=false`,
+      {
+        headers: {
+          Authorization: auth,
+        },
+      }
+    );
+    const resultArray = [];
+    const elements = response.data.elements;
+    for (let i = 0; i < elements.length; i++) {
+      if ("codesystem" in elements[i] && elements[i].name === "type") {
+        const entries = elements[i].codesystem.entries;
+
+        const result = entries.map((docType: { id: string; data: string }) => ({
+          id: docType.id,
+          name: docType.data,
+        }));
+
+        res.json(result);
+      }
+    }
+  } catch (error) {
+    console.error("Error getting the document types:", error);
+    res.status(500).json({ message: "Failed to get the document types" });
   }
 };
 

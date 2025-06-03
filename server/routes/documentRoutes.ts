@@ -6,6 +6,7 @@ import {
   getDocumentDownload,
   getFilterData,
   getSearchResults,
+  getDocTypes,
 } from "../controllers/documentController";
 
 const router = express.Router();
@@ -15,5 +16,6 @@ router.get("/documentcontent/:id", getDocumentContent);
 router.get("/document/:id", getDocumentById);
 router.get("/documentdownload/:id", getDocumentDownload);
 router.get("/filterdata", getFilterData);
+router.get("/doctypes", getDocTypes);
 router.post("/searchresults", getSearchResults);
 export default router;

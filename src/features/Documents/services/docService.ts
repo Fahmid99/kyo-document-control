@@ -58,6 +58,16 @@ const getFilterData = async () => {
   }
 };
 
+const getDocTypes = async () => {
+  try {
+    const response = await axios.get(`${API_BASE_URL}/doctypes`);
+    return response.data;
+  } catch (error) {
+    console.log("There was an error fetching the document types:", error);
+    throw error;
+  }
+};
+
 const getSearchResults = async (term: string) => {
   try {
     // Define the request body
@@ -88,5 +98,6 @@ export default {
   getDocumentById: getDocumentById,
   getDocumentDownload: getDocumentDownload,
   getFilterData: getFilterData,
+  getDocTypes: getDocTypes,
   getSearchResults: getSearchResults,
 };
