@@ -7,22 +7,15 @@ import { ThemeProvider } from "@mui/material/styles";
 import HelpPage from "./pages/HelpPage/HelpPage.tsx";
 import DocumentsPage from "./pages/DocumentsPage/DocumentsPage.tsx";
 import ContentViewPage from "./pages/ContentViewPage/ContentViewPage.tsx";
-import { useEffect, useState } from "react";
-import docService from "./features/Documents/services/docService.ts";
 
 function App() {
-
-
-   
-
-
   return (
     <>
       <ThemeProvider theme={theme}>
         <Router>
           <Routes>
             {/* Root route with Sidebar */}
-            <Route path="/" element={<Sidebar  />}>
+            <Route path="/" element={<Sidebar />}>
               <Route index /> {/* Default page */}
               <Route path="help" element={<HelpPage />} />
               <Route path="documents" element={<DocumentsPage />}>

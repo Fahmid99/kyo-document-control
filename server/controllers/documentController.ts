@@ -24,7 +24,7 @@ const auth =
 export const getDocuments = async (req: Request, res: Response) => {
   try {
     const response = await axios.get(
-      `${URL}result/query?type=published&offset=0&limit=-1&fields=audience%2Ccategory%2Cclassification%2Cdocstatus%2Cexternal%2Cfunctionsubfn%2Cname%2Cpublishdate%2Creleasedate%2Creviewdate%2Ctype%2Cversion%2Cverstatus%2Crelated&header=false&datameta=false`,
+      `${URL}result/query?type=published&offset=0&limit=-1&fields=audience%2Ccategory%2Cclassification%2Cdocumentstatus%2Cexternal%2Cfunctionsubfn%2Cname%2Cpublishdate%2Creleasedate%2Creviewdate%2Ctype%2Cversion%2Cversionstatus%2Crelated&header=false&datameta=false`,
       {
         headers: {
           Authorization: auth,
