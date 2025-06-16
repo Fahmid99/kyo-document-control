@@ -1,11 +1,9 @@
-import { getFilterData } from "./../../../../server/controllers/documentController";
-import axios from "axios";
 
-const API_BASE_URL = "http://localhost:4001/api";
+import axios from "axios";
 
 const getDocuments = async () => {
   try {
-    const response = await axios.get(`${API_BASE_URL}/documents`);
+    const response = await axios.get(`/api/documents`);
     return response.data;
   } catch (error) {
     console.log("There was an error fetching the documents" + error);
@@ -14,7 +12,7 @@ const getDocuments = async () => {
 
 const getDocumentContent = async (id: string) => {
   try {
-    const response = await axios.get(`${API_BASE_URL}/documentcontent/${id}`);
+    const response = await axios.get(`/api/documentcontent/${id}`);
     console.log(response.data);
     return response.data; // Assuming the backend returns Base64-encoded content
   } catch (error) {
@@ -25,7 +23,7 @@ const getDocumentContent = async (id: string) => {
 
 const getDocumentById = async (id: string) => {
   try {
-    const response = await axios.get(`${API_BASE_URL}/document/${id}`);
+    const response = await axios.get(`/api/document/${id}`);
     return response.data;
   } catch (error) {
     console.log("There was an error fetching the document data:", error);
@@ -35,7 +33,7 @@ const getDocumentById = async (id: string) => {
 
 const getDocumentDownload = async (id: string, downloadType: string) => {
   try {
-    const response = await axios.get(`${API_BASE_URL}/documentdownload/${id}`, {
+    const response = await axios.get(`/api/documentdownload/${id}`, {
       params: {
         type: downloadType, // Pass downloadType as a query parameter
       },
@@ -50,7 +48,7 @@ const getDocumentDownload = async (id: string, downloadType: string) => {
 
 const getFilterData = async () => {
   try {
-    const response = await axios.get(`${API_BASE_URL}/filterdata`);
+    const response = await axios.get(`/api/filterdata`);
     return response.data;
   } catch (error) {
     console.log("There was an error fetching the filter data:", error);
@@ -60,7 +58,8 @@ const getFilterData = async () => {
 
 const getDocTypes = async () => {
   try {
-    const response = await axios.get(`${API_BASE_URL}/doctypes`);
+    const response = await axios.get(`/api/doctypes`);
+    console.log(response.data);
     return response.data;
   } catch (error) {
     console.log("There was an error fetching the document types:", error);
@@ -80,10 +79,7 @@ const getSearchResults = async (term: string) => {
     };
 
     // Make the POST request with the body
-    const response = await axios.post(
-      `${API_BASE_URL}/searchresults`,
-      requestBody
-    );
+    const response = await axios.post(`/api/searchresults`, requestBody);
 
     // Return the response data
     return response.data;

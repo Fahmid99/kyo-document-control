@@ -9,21 +9,45 @@ import ArticleIcon from "@mui/icons-material/Article";
 import DescriptionIcon from "@mui/icons-material/Description"; // For "All Documents"
 import FolderIcon from "@mui/icons-material/Folder";
 
-// Mapping object to convert URL categories to document types
-const categoryToTypeMap = {
-  policies: "Policy", // URL category "policies" maps to document type "Policy"
-  forms: "Form", // URL category "forms" maps to document type "Form"
-  procedures: "Procedure", // URL category "procedures" maps to document type "Procedure"
-  "policies-and-procedures": ["Policy", "Procedure"], // Combined type for "Policies & Procedures"
-};
+interface DocType {
+  id: string;
+  name: string;
+}
 
-function DocumentsPage() {
+interface DocumentsPageProps {
+  docTypes: DocType[];
+}
+
+const DocumentsPage: React.FC<DocumentsPageProps> = ({ docTypes = [] }) => {
   const { category } = useParams<{ category?: string }>();
   const [documents, setDocuments] = useState([]);
   const [filterData, setFilterData] = useState([]);
   const [filterQuery, setFilterQuery] = useState({});
   const [searchQuery, setSearchQuery] = useState("");
   const navigate = useNavigate();
+
+  // Function to get document type(s) from URL category
+  const getDocTypeFromCategory = (category: string): string | string[] | null => {
+    if (!category) return null;
+
+    // Handle special cases first
+    if (category === "policies-and-procedures") {
+      return ["Policy", "Procedure"];
+    }
+
+    // Convert URL format to proper case (e.g., "work-instruction" -> "Work Instruction")
+    const formattedCategory = category
+      .split('-')
+      .map(word => word.charAt(0).toUpperCase() + word.slice(1))
+      .join(' ');
+
+    // Find matching docType by name
+    const matchingDocType = docTypes.find(docType => 
+      docType.name.toLowerCase() === formattedCategory.toLowerCase()
+    );
+
+    return matchingDocType ? matchingDocType.name : null;
+  };
 
   // Fetch documents and filter data on component mount
   useEffect(() => {
@@ -58,7 +82,6 @@ function DocumentsPage() {
           ?.entries.map((entry) => entry.data) || [],
       keyName: "functionsubfn",
     },
-
     {
       name: "Categories",
       data:
@@ -77,8 +100,12 @@ function DocumentsPage() {
     setSearchQuery(event.target.value);
   };
 
-  // Get the corresponding type from the mapping object
-  const type = category ? categoryToTypeMap[category] : null;
+  // Get the corresponding type from docTypes array
+  const type = category ? getDocTypeFromCategory(category) : null;
+
+  console.log('Category:', category);
+  console.log('Resolved type:', type);
+  console.log('Available docTypes:', docTypes);
 
   // Filter documents based on type, category, function, and search query
   const filteredDocuments = documents.filter((doc) => {
@@ -118,6 +145,19 @@ function DocumentsPage() {
     navigate(`/documents/${doc.data.type}/${doc.id}`);
   };
 
+  // Get display name for the page title
+  const getDisplayName = (category: string): string => {
+    if (category === "policies-and-procedures") {
+      return "Policies & Procedures";
+    }
+    
+    // Convert URL format to display format (e.g., "work-instruction" -> "Work Instruction")
+    return category
+      .split('-')
+      .map(word => word.charAt(0).toUpperCase() + word.slice(1))
+      .join(' ');
+  };
+
   return (
     <div>
       {/* Page Title and Icon */}
@@ -132,12 +172,7 @@ function DocumentsPage() {
           fontWeight={"600"}
           color="#212121"
         >
-          {category
-            ? category === "policies-and-procedures" // Check if category is "policies-and-procedures"
-              ? "Policies & Procedures" // Display as "Policies & Procedures"
-              : category.charAt(0).toUpperCase() + // Capitalize the first letter
-                category.slice(1).replace(/-/g, " ") // Replace hyphens with spaces
-            : "All Documents"}
+          {category ? getDisplayName(category) : "All Documents"}
           {category === "policies-and-procedures" ? (
             <PolicyIcon
               sx={{
@@ -177,7 +212,7 @@ function DocumentsPage() {
           filterButtons={filterButtons}
           handleFilterChange={handleFilterChange}
           filterQuery={filterQuery}
-          setfilterQuery={setFilterQuery} // Ensure this matches the prop name in Filters
+          setfilterQuery={setFilterQuery}
           handleSearchChange={handleSearchChange}
           searchQuery={searchQuery}
           documents={documents}
@@ -189,6 +224,6 @@ function DocumentsPage() {
       </Box>
     </div>
   );
-}
+};
 
 export default DocumentsPage;

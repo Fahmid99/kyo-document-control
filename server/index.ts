@@ -3,7 +3,7 @@ import express, { Application, Request, Response } from "express";
 import bodyParser from "body-parser";
 import cors from "cors";
 import documentRoutes from "./routes/documentRoutes";
-
+import path from "path";
 dotenv.config();
 
 const app: Application = express();
@@ -19,8 +19,13 @@ app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
 
 app.use("/api", documentRoutes); // Prefix all routes with /api
+app.use(express.static(path.join(__dirname, "../dist")));
 
-const PORT = process.env.PORT || 4001;
+app.get(/.*/, (req, res) => {
+  res.sendFile(path.join(__dirname, "../dist", "index.html"));
+});
+
+const PORT = process.env.PORT || 5001;
 app.listen(PORT, () => {
   console.log(`Server is running on port ${PORT}`);
 });

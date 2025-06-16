@@ -22,7 +22,24 @@ import ProcedureIcon from "@mui/icons-material/FormatListBulleted";
 import FolderIcon from "@mui/icons-material/Folder";
 import { Button } from "@mui/material";
 import docService from "../../features/Documents/services/docService";
+
 const drawerWidth = 280;
+
+// Define the docType object structure
+interface DocType {
+  id: string;
+  name: string;
+}
+
+interface ClippedDrawerProps {
+  docTypes: DocType[];
+}
+
+interface DrawerContentProps {
+  docTypes: DocType[];
+  open: boolean | undefined;
+  handleClick: () => void;
+}
 
 // Style object for ListItemButton
 const listItemButtonStyles = {
@@ -47,42 +64,37 @@ const listItemButtonStyles = {
 };
 
 // Child component that uses useLocation
-const DrawerContent = ({ open, handleClick }) => {
+const DrawerContent: React.FC<DrawerContentProps> = ({
+  open,
+  handleClick,
+  docTypes = [],
+}) => {
   const location = useLocation();
-  const [docTypes, setDocTypes] = React.useState([]);
-  const handleShowMore = async () => {
-    try {
-      const response = await docService.getDocTypes();
-      setDocTypes(response);
-      console.log(response)
-    } catch (error) {
-      console.error("There was an error fetching document types:", error);
-    }
-  };
+  const [showAllDocTypes, setShowAllDocTypes] = React.useState(false);
+
+  // Number of docTypes to show initially
+  const INITIAL_SHOW_COUNT = 0;
+
+  // Determine which docTypes to display
+  const displayedDocTypes = showAllDocTypes
+    ? docTypes
+    : docTypes.slice(0, INITIAL_SHOW_COUNT);
+
+  const hasMoreDocTypes = docTypes.length > INITIAL_SHOW_COUNT;
+
+  // Debug: Log what we're receiving
+  console.log("DrawerContent received docTypes:", docTypes);
+
   return (
     <Box sx={{ overflow: "auto" }}>
       <List>
-        {/* Home Section */}
-        <ListItemButton
-          component={Link}
-          to="/"
-          sx={listItemButtonStyles}
-          selected={location.pathname === "/"}
-          disabled
-        >
-          <ListItemIcon>
-            <HomeIcon />
-          </ListItemIcon>
-          <ListItemText primary="Home" />
-        </ListItemButton>
-
         {/* All Documents Section */}
         <ListItemButton
           onClick={handleClick}
           sx={listItemButtonStyles}
           component={Link}
           to="/documents"
-          selected={location.pathname === "/documents"} // Only highlight if exact match
+          selected={location.pathname === "/documents"}
         >
           <ListItemIcon>
             <FolderIcon />
@@ -114,21 +126,60 @@ const DrawerContent = ({ open, handleClick }) => {
             {/* Forms Section */}
             <ListItemButton
               component={Link}
-              to="/documents/forms"
+              to="/documents/form"
               sx={{ ...listItemButtonStyles, pl: 4 }}
-              selected={location.pathname === "/documents/forms"}
+              selected={location.pathname === "/documents/form"}
             >
               <ListItemIcon>
                 <ArticleIcon />
               </ListItemIcon>
-              <ListItemText primary="Forms" />
+              <ListItemText primary="Form" />
             </ListItemButton>
-            <ListItemButton
-              onClick={handleShowMore}
-              sx={{ ...listItemButtonStyles, pl: 4 }}
-            >
-              Show More
-            </ListItemButton>
+
+            {/* Dynamic Categories from docTypes */}
+            {displayedDocTypes.map((docType) =>
+              docType.name !== "Form" ? (
+                <ListItemButton
+                  key={docType.id}
+                  component={Link}
+                  to={`/documents/${docType.name.toLowerCase().replace(/\s+/g, "-")}`}
+                  sx={{ ...listItemButtonStyles, pl: 4 }}
+                  selected={
+                    location.pathname ===
+                    `/documents/${docType.name.toLowerCase().replace(/\s+/g, "-")}`
+                  }
+                >
+                  <ListItemIcon>
+                    <ArticleIcon />
+                  </ListItemIcon>
+                  <ListItemText primary={docType.name} />
+                </ListItemButton>
+              ) : null
+            )}
+
+            {/* Show More/Show Less Button */}
+            {hasMoreDocTypes && (
+              <ListItemButton
+                onClick={() => setShowAllDocTypes(!showAllDocTypes)}
+                sx={{
+                  ...listItemButtonStyles,
+                  pl: 4,
+                  fontStyle: "italic",
+                  color: "#666",
+                }}
+              >
+                <ListItemIcon>
+                  {showAllDocTypes ? <ExpandLess /> : <ExpandMore />}
+                </ListItemIcon>
+                <ListItemText
+                  primary={
+                    showAllDocTypes
+                      ? "Show Less"
+                      : `Show More`
+                  }
+                />
+              </ListItemButton>
+            )}
           </List>
         </Collapse>
 
@@ -150,10 +201,13 @@ const DrawerContent = ({ open, handleClick }) => {
   );
 };
 
-export default function ClippedDrawer() {
+const ClippedDrawer: React.FC<ClippedDrawerProps> = ({ docTypes = [] }) => {
   const handleClick = () => {
     // Handle click logic if needed
   };
+
+  // Debug: Log what we're receiving
+  console.log("ClippedDrawer received docTypes:", docTypes);
 
   return (
     <Box sx={{ display: "flex" }}>
@@ -190,14 +244,15 @@ export default function ClippedDrawer() {
         <DrawerContent
           handleClick={handleClick}
           open={undefined}
-        
-        />{" "}
-        {/* Removed `open` prop */}
+          docTypes={docTypes}
+        />
       </Drawer>
       <Box component="main" sx={{ flexGrow: 1, p: 3 }}>
         <Toolbar />
-        <Outlet /> {/* This renders the nested route's component */}
+        <Outlet />
       </Box>
     </Box>
   );
-}
+};
+
+export default ClippedDrawer;
