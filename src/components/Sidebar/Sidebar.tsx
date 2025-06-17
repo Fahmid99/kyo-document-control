@@ -100,7 +100,7 @@ const DrawerContent: React.FC<DrawerContentProps> = ({
             <FolderIcon />
           </ListItemIcon>
           <ListItemText primary="All Documents" />
-          {open ? <ExpandLess /> : <ExpandMore />}
+          {/* {open ? <ExpandLess /> : <ExpandMore />} */}
         </ListItemButton>
 
         {/* Collapsible Section for Sub-Routes */}
