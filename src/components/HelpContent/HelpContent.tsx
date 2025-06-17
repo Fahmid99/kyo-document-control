@@ -77,9 +77,9 @@ export default function HelpContent() {
         their content.
       </Typography>
       <Typography variant="body1" sx={{ mb: 2 }}>
-        <strong>Downloading Documents:</strong> The document type is controlled by administrators. Most documents can be downloaded
+        <strong>Downloading Documents:</strong> Most documents can be downloaded
         by clicking the download icon or right-clicking the PDF and selecting
-        "Save As."
+        "Save As. The document file format is controlled by the administrator"
       </Typography>
       <Typography variant="body1" sx={{ mb: 2 }}>
         <strong>Need Help?</strong> If you encounter any issues or bugs please
