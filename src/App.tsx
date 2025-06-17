@@ -37,7 +37,8 @@ function App() {
           <Routes>
             {/* Root route with Sidebar */}
             <Route path="/" element={<Sidebar docTypes={docTypes} />}>
-              <Route index /> {/* Default page */}
+              <Route index element={<DocumentsPage docTypes={docTypes} />} />
+              {/* Default page */}
               <Route path="help" element={<HelpPage />} />
               <Route
                 path="documents"
