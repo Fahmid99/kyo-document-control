@@ -27,7 +27,9 @@ const DocumentsPage: React.FC<DocumentsPageProps> = ({ docTypes = [] }) => {
   const navigate = useNavigate();
 
   // Function to get document type(s) from URL category
-  const getDocTypeFromCategory = (category: string): string | string[] | null => {
+  const getDocTypeFromCategory = (
+    category: string
+  ): string | string[] | null => {
     if (!category) return null;
 
     // Handle special cases first
@@ -37,13 +39,14 @@ const DocumentsPage: React.FC<DocumentsPageProps> = ({ docTypes = [] }) => {
 
     // Convert URL format to proper case (e.g., "work-instruction" -> "Work Instruction")
     const formattedCategory = category
-      .split('-')
-      .map(word => word.charAt(0).toUpperCase() + word.slice(1))
-      .join(' ');
+      .split("-")
+      .map((word) => word.charAt(0).toUpperCase() + word.slice(1))
+      .join(" ");
 
     // Find matching docType by name
-    const matchingDocType = docTypes.find(docType => 
-      docType.name.toLowerCase() === formattedCategory.toLowerCase()
+    const matchingDocType = docTypes.find(
+      (docType) =>
+        docType.name.toLowerCase() === formattedCategory.toLowerCase()
     );
 
     return matchingDocType ? matchingDocType.name : null;
@@ -103,9 +106,9 @@ const DocumentsPage: React.FC<DocumentsPageProps> = ({ docTypes = [] }) => {
   // Get the corresponding type from docTypes array
   const type = category ? getDocTypeFromCategory(category) : null;
 
-  console.log('Category:', category);
-  console.log('Resolved type:', type);
-  console.log('Available docTypes:', docTypes);
+  console.log("Category:", category);
+  console.log("Resolved type:", type);
+  console.log("Available docTypes:", docTypes);
 
   // Filter documents based on type, category, function, and search query
   const filteredDocuments = documents.filter((doc) => {
@@ -150,12 +153,12 @@ const DocumentsPage: React.FC<DocumentsPageProps> = ({ docTypes = [] }) => {
     if (category === "policies-and-procedures") {
       return "Policies & Procedures";
     }
-    
+
     // Convert URL format to display format (e.g., "work-instruction" -> "Work Instruction")
     return category
-      .split('-')
-      .map(word => word.charAt(0).toUpperCase() + word.slice(1))
-      .join(' ');
+      .split("-")
+      .map((word) => word.charAt(0).toUpperCase() + word.slice(1))
+      .join(" ");
   };
 
   return (
