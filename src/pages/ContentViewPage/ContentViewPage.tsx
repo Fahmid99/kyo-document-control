@@ -15,6 +15,7 @@ import {
   Box,
   Button,
 } from "@mui/material";
+import { DocumentScanner } from "@mui/icons-material";
 
 function ContentViewPage() {
   const { id } = useParams<{ id: string }>();
@@ -56,16 +57,17 @@ function ContentViewPage() {
           console.error("No ID found in the URL");
           return;
         }
-
+  
         const response = await docService.getDocumentById(id);
         console.log(response);
-        if (response.data.downloadoriginalformat !== true) {
+        if (response.data.downloadoriginalfiletype !== true) {
           setDownloadType("PDF");
         } else {
           setDownloadType("");
         }
         setDocumentData(response);
         console.log(response);
+        console.log(downloadType)
       } catch (error) {
         console.log(error);
       }
