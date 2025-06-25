@@ -249,7 +249,7 @@ function DocumentsTable({
                     className="document-name"
                     sx={{
                       fontWeight: 500,
-                      fontSize: "0.875rem",
+                      fontSize: "1rem",
                       lineHeight: 1.4,
                       transition: "all 0.2s ease",
                       color: "#1a1a1a",
@@ -269,7 +269,7 @@ function DocumentsTable({
                     backgroundColor: alpha(getTypeColor(doc.data.type), 0.1),
                     color: getTypeColor(doc.data.type),
                     fontWeight: 600,
-                    fontSize: "0.75rem",
+                    fontSize: "1rem",
                     height: "28px",
                     borderRadius: "6px",
                     border: `1px solid ${alpha(getTypeColor(doc.data.type), 0.2)}`,
@@ -287,7 +287,7 @@ function DocumentsTable({
                       size="small"
                       variant="outlined"
                       sx={{
-                        fontSize: "0.7rem",
+                        fontSize: "1rem",
                         height: "24px",
                         borderRadius: "4px",
                         borderColor: alpha('#666', 0.3),
@@ -306,7 +306,7 @@ function DocumentsTable({
                         label={`+${(doc.data.functionsubfn ?? []).length - 2}`}
                         size="small"
                         sx={{
-                          fontSize: "0.7rem",
+                          fontSize: "1rem",
                           height: "24px",
                           borderRadius: "4px",
                           backgroundColor: alpha('#999', 0.1),
@@ -329,7 +329,7 @@ function DocumentsTable({
                       size="small"
                       variant="outlined"
                       sx={{
-                        fontSize: "0.7rem",
+                        fontSize: "1rem",
                         height: "24px",
                         borderRadius: "4px",
                         borderColor: alpha(theme.palette.kyoPurple?.main || '#6e3cbe', 0.3),
@@ -347,7 +347,7 @@ function DocumentsTable({
                         label={`+${(doc.data.category ?? []).length - 2}`}
                         size="small"
                         sx={{
-                          fontSize: "0.7rem",
+                          fontSize: "1rem",
                           height: "24px",
                           borderRadius: "4px",
                           backgroundColor: alpha(theme.palette.kyoPurple?.main || '#6e3cbe', 0.1),
@@ -367,7 +367,7 @@ function DocumentsTable({
                   <Typography
                     variant="body2"
                     sx={{
-                      fontSize: "0.875rem",
+                      fontSize: "1rem",
                       color: "#666",
                       fontWeight: 500,
                     }}
