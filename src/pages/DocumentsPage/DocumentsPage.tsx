@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useEffect, useState, useMemo } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import docService from "../../features/Documents/services/docService";
 import {
@@ -34,10 +34,23 @@ interface DocumentsPageProps {
   docTypes: DocType[];
 }
 
+interface FilterEntry {
+  id: string;
+  data: string;
+  defaultrepresentation: string;
+  label: string;
+  order: number;
+}
+
+interface FilterData {
+  name: string;
+  entries: FilterEntry[];
+}
+
 const DocumentsPage: React.FC<DocumentsPageProps> = ({ docTypes = [] }) => {
   const { category } = useParams<{ category?: string }>();
   const [documents, setDocuments] = useState([]);
-  const [filterData, setFilterData] = useState([]);
+  const [filterData, setFilterData] = useState<FilterData[]>([]);
   const [filterQuery, setFilterQuery] = useState({});
   const [searchQuery, setSearchQuery] = useState("");
   const [isExpanded, setIsExpanded] = useState<boolean>(false);
@@ -84,6 +97,7 @@ const DocumentsPage: React.FC<DocumentsPageProps> = ({ docTypes = [] }) => {
     const getFilterData = async () => {
       try {
         const response = await docService.getFilterData();
+        console.log(response);
         setFilterData(response);
       } catch (error) {
         console.error("There was an error fetching filter data:", error);
@@ -94,24 +108,75 @@ const DocumentsPage: React.FC<DocumentsPageProps> = ({ docTypes = [] }) => {
     getFilterData();
   }, []);
 
-  const filterButtons = [
-    {
-      name: "Functions",
-      data:
-        filterData
-          .find((item) => item.name === "functionsubfn")
-          ?.entries.map((entry) => entry.data) || [],
-      keyName: "functionsubfn",
-    },
-    {
-      name: "Categories",
-      data:
-        filterData
-          .find((item) => item.name === "category")
-          ?.entries.map((entry) => entry.data) || [],
-      keyName: "category",
-    },
-  ];
+  // Get the corresponding type from docTypes array
+  const type = category ? getDocTypeFromCategory(category) : null;
+
+  // First, filter documents based on type (category selection)
+  const baseFilteredDocuments = useMemo(() => {
+    return documents.filter((doc) => {
+      const matchesType = type
+        ? Array.isArray(type)
+          ? type.includes(doc.data.type)
+          : doc.data.type === type
+        : true;
+
+      const excludeForms =
+        category === "policies-and-procedures" && doc.data.type === "Form";
+
+      return matchesType && !excludeForms;
+    });
+  }, [documents, type, category]);
+
+  // Generate filter options based on current base filtered documents
+  const dynamicFilterButtons = useMemo(() => {
+    if (!filterData.length || !baseFilteredDocuments.length) {
+      return [];
+    }
+
+    // Get unique categories from current documents
+    const availableCategories = new Set<string>();
+    const availableFunctions = new Set<string>();
+
+    baseFilteredDocuments.forEach((doc) => {
+      // Add categories
+      if (doc.data.category && Array.isArray(doc.data.category)) {
+        doc.data.category.forEach((cat: string) => availableCategories.add(cat));
+      }
+      
+      // Add functions
+      if (doc.data.functionsubfn && Array.isArray(doc.data.functionsubfn)) {
+        doc.data.functionsubfn.forEach((fn: string) => availableFunctions.add(fn));
+      }
+    });
+
+    // Get full filter data for reference
+    const categoryData = filterData.find((item) => item.name === "category");
+    const functionData = filterData.find((item) => item.name === "functionsubfn");
+
+    const filterButtons = [];
+
+    // Functions filter - only show functions that exist in current documents
+    if (functionData && availableFunctions.size > 0) {
+      const availableFunctionList = Array.from(availableFunctions).sort();
+      filterButtons.push({
+        name: "Functions",
+        data: availableFunctionList,
+        keyName: "functionsubfn",
+      });
+    }
+
+    // Categories filter - only show categories that exist in current documents
+    if (categoryData && availableCategories.size > 0) {
+      const availableCategoryList = Array.from(availableCategories).sort();
+      filterButtons.push({
+        name: "Categories", 
+        data: availableCategoryList,
+        keyName: "category",
+      });
+    }
+
+    return filterButtons;
+  }, [filterData, baseFilteredDocuments]);
 
   const handleFilterChange = (query) => {
     setFilterQuery(query);
@@ -129,40 +194,26 @@ const DocumentsPage: React.FC<DocumentsPageProps> = ({ docTypes = [] }) => {
     setIsExpanded(false);
   };
 
-  // Get the corresponding type from docTypes array
-  const type = category ? getDocTypeFromCategory(category) : null;
+  // Final filtered documents (base + additional filters + search)
+  const filteredDocuments = useMemo(() => {
+    return baseFilteredDocuments.filter((doc) => {
+      const matchesCategory = filterQuery.category
+        ? doc.data.category.some((cat) => filterQuery.category.includes(cat))
+        : true;
+      
+      const matchesFunctionSubFn = filterQuery.functionsubfn
+        ? doc.data.functionsubfn.some((fn) =>
+            filterQuery.functionsubfn.includes(fn)
+          )
+        : true;
+      
+      const matchesSearch = searchQuery
+        ? doc.data.name.toLowerCase().includes(searchQuery.toLowerCase())
+        : true;
 
-  // Filter documents based on type, category, function, and search query
-  const filteredDocuments = documents.filter((doc) => {
-    const matchesType = type
-      ? Array.isArray(type)
-        ? type.includes(doc.data.type)
-        : doc.data.type === type
-      : true;
-
-    const excludeForms =
-      category === "policies-and-procedures" && doc.data.type === "Form";
-
-    const matchesCategory = filterQuery.category
-      ? doc.data.category.some((cat) => filterQuery.category.includes(cat))
-      : true;
-    const matchesFunctionSubFn = filterQuery.functionsubfn
-      ? doc.data.functionsubfn.some((fn) =>
-          filterQuery.functionsubfn.includes(fn)
-        )
-      : true;
-    const matchesSearch = searchQuery
-      ? doc.data.name.toLowerCase().includes(searchQuery.toLowerCase())
-      : true;
-
-    return (
-      matchesType &&
-      matchesCategory &&
-      matchesFunctionSubFn &&
-      matchesSearch &&
-      !excludeForms
-    );
-  });
+      return matchesCategory && matchesFunctionSubFn && matchesSearch;
+    });
+  }, [baseFilteredDocuments, filterQuery, searchQuery]);
 
   const handleRowClick = (doc) => {
     navigate(`/documents/${doc.data.type}/${doc.id}`);
@@ -371,7 +422,7 @@ const DocumentsPage: React.FC<DocumentsPageProps> = ({ docTypes = [] }) => {
           }}
         >
           <Filters
-            filterButtons={filterButtons}
+            filterButtons={dynamicFilterButtons}
             handleFilterChange={handleFilterChange}
             filterQuery={filterQuery}
             setfilterQuery={setFilterQuery}
