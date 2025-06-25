@@ -57,20 +57,25 @@ function DocumentsTable({
       }}
     >
       <Table stickyHeader>
-        <TableHead
-          sx={{ background: "#6e3cbe", color: "white"}}
-        >
+        <TableHead sx={{ background: "#6e3cbe", color: "white" }}>
           <TableRow>
             {/* Name Column */}
             <TableCell
               sx={{
                 color: "white",
                 fontWeight: "bold",
-                fontSize: "16px",
+                fontSize: "14px", // Reduced font size
                 position: "sticky",
                 top: 0,
                 backgroundColor: "#6e3cbe",
                 zIndex: 100,
+                height: "40px !important", // Force smaller height
+                minHeight: "40px !important",
+                maxHeight: "40px !important",
+                paddingTop: "8px !important", // Reduced padding
+                paddingBottom: "8px !important",
+                paddingLeft: "16px",
+                paddingRight: "16px",
               }}
             >
               <TableSortLabel
@@ -82,6 +87,7 @@ function DocumentsTable({
                   "&.Mui-active": { color: "white" },
                   "&:hover": { color: "white" },
                   "& .MuiTableSortLabel-icon": { color: "white !important" },
+                  fontSize: "14px", // Match font size
                 }}
               >
                 Name
@@ -93,11 +99,18 @@ function DocumentsTable({
               sx={{
                 color: "white",
                 fontWeight: "bold",
-                fontSize: "16px",
-                position: "sticky", // Add this
-                top: 0, // Add this
-                backgroundColor: "#6e3cbe", // Add this
-                zIndex: 100, // Add this
+                fontSize: "14px", // Reduced font size
+                position: "sticky",
+                top: 0,
+                backgroundColor: "#6e3cbe",
+                zIndex: 100,
+                height: "40px !important", // Force smaller height
+                minHeight: "40px !important",
+                maxHeight: "40px !important",
+                paddingTop: "8px !important", // Reduced padding
+                paddingBottom: "8px !important",
+                paddingLeft: "16px",
+                paddingRight: "16px",
               }}
             >
               <TableSortLabel
@@ -109,6 +122,7 @@ function DocumentsTable({
                   "&.Mui-active": { color: "white" },
                   "&:hover": { color: "white" },
                   "& .MuiTableSortLabel-icon": { color: "white !important" },
+                  fontSize: "14px", // Match font size
                 }}
               >
                 Type
@@ -120,11 +134,18 @@ function DocumentsTable({
               sx={{
                 color: "white",
                 fontWeight: "bold",
-                fontSize: "16px",
-                position: "sticky", // Add this
-                top: 0, // Add this
-                backgroundColor: "#6e3cbe", // Add this
-                zIndex: 100, // Add this
+                fontSize: "14px", // Reduced font size
+                position: "sticky",
+                top: 0,
+                backgroundColor: "#6e3cbe",
+                zIndex: 100,
+                height: "40px !important", // Force smaller height
+                minHeight: "40px !important",
+                maxHeight: "40px !important",
+                paddingTop: "8px !important", // Reduced padding
+                paddingBottom: "8px !important",
+                paddingLeft: "16px",
+                paddingRight: "16px",
               }}
             >
               Function
@@ -135,11 +156,18 @@ function DocumentsTable({
               sx={{
                 color: "white",
                 fontWeight: "bold",
-                fontSize: "16px",
-                position: "sticky", // Add this
-                top: 0, // Add this
-                backgroundColor: "#6e3cbe", // Add this
-                zIndex: 100, // Add this
+                fontSize: "14px", // Reduced font size
+                position: "sticky",
+                top: 0,
+                backgroundColor: "#6e3cbe",
+                zIndex: 100,
+                height: "40px !important", // Force smaller height
+                minHeight: "40px !important",
+                maxHeight: "40px !important",
+                paddingTop: "8px !important", // Reduced padding
+                paddingBottom: "8px !important",
+                paddingLeft: "16px",
+                paddingRight: "16px",
               }}
             >
               Category
@@ -150,11 +178,18 @@ function DocumentsTable({
               sx={{
                 color: "white",
                 fontWeight: "bold",
-                fontSize: "16px",
-                position: "sticky", // Add this
-                top: 0, // Add this
-                backgroundColor: "#6e3cbe", // Add this
-                zIndex: 100, // Add this
+                fontSize: "14px", // Reduced font size
+                position: "sticky",
+                top: 0,
+                backgroundColor: "#6e3cbe",
+                zIndex: 100,
+                height: "40px !important", // Force smaller height
+                minHeight: "40px !important",
+                maxHeight: "40px !important",
+                paddingTop: "8px !important", // Reduced padding
+                paddingBottom: "8px !important",
+                paddingLeft: "16px",
+                paddingRight: "16px",
               }}
             >
               <TableSortLabel
@@ -166,6 +201,7 @@ function DocumentsTable({
                   "&.Mui-active": { color: "white" },
                   "&:hover": { color: "white" },
                   "& .MuiTableSortLabel-icon": { color: "white !important" },
+                  fontSize: "14px", // Match font size
                 }}
               >
                 Release Date

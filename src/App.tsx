@@ -1,4 +1,5 @@
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
+import { Box } from "@mui/material";
 import theme from "./theme.d.ts";
 import "./App.css";
 import Sidebar from "./components/Sidebar/Sidebar";
@@ -31,8 +32,12 @@ function App() {
   }, []);
 
   return (
-    <>
-      <ThemeProvider theme={theme}>
+    <ThemeProvider theme={theme}>
+      <Box sx={{ 
+        minHeight: "100vh",
+        display: "flex",
+        flexDirection: "column"
+      }}>
         <Router>
           <Routes>
             {/* Root route with Sidebar */}
@@ -48,15 +53,14 @@ function App() {
                   path=":category"
                   element={<DocumentsPage docTypes={docTypes} />}
                 />
-
                 {/* Nested route for category */}
               </Route>
               <Route path="documents/:type/:id" element={<ContentViewPage />} />
             </Route>
           </Routes>
         </Router>
-      </ThemeProvider>
-    </>
+      </Box>
+    </ThemeProvider>
   );
 }
 

@@ -4,8 +4,10 @@ import InputAdornment from "@mui/material/InputAdornment";
 import SearchIcon from "@mui/icons-material/Search";
 import DropDownFilter from "./DropDownFilter";
 import ManageSearchIcon from "@mui/icons-material/ManageSearch";
+import ExpandIcon from "@mui/icons-material/OpenInFull";
 import SearchModal from "../../../components/SearchModal/SearchModal";
 import React from "react";
+
 function Filters({
   filterButtons,
   handleFilterChange,
@@ -14,6 +16,7 @@ function Filters({
   handleSearchChange,
   searchQuery,
   documents,
+  expandButton, // New prop for the expand button
 }) {
   const [open, setOpen] = React.useState(false);
   const handleOpen = () => setOpen(true);
@@ -31,12 +34,11 @@ function Filters({
           />
         </div>
       ))}
-      <Box sx={{ marginLeft: "auto" }}>
+      <Box sx={{ marginLeft: "auto", display: "flex", alignItems: "center", gap: "1em" }}>
         <Button
           variant="outlined"
           onClick={handleOpen}
           sx={{
-            marginRight: "1em",
             borderWidth: "2px",
             marginTop: "3px",
             borderColor: "#6e3cbe",
@@ -47,6 +49,10 @@ function Filters({
           Search by Content
           <ManageSearchIcon sx={{ marginLeft: "7px" }} />{" "}
         </Button>
+        
+        {/* Expand Button */}
+        {expandButton}
+        
         <SearchModal
           open={open}
           handleClose={handleClose}
@@ -66,7 +72,6 @@ function Filters({
             ),
           }}
           sx={{
-            marginRight: "1em",
             marginTop: "2px",
             "& .MuiOutlinedInput-root": {
               boxShadow: "0px 9px 13px -px rgba(0,0,0,0.55)", // Add box shadow here
