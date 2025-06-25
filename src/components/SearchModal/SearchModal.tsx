@@ -55,7 +55,8 @@ function SearchModal({ open, handleClose }: SearchModalProps) {
   const [searchTerm, setSearchTerm] = useState("");
   const [searchResults, setSearchResults] = useState<SearchResult[]>([]);
   const [showNoResults, setShowNoResults] = useState<boolean>(false);
-  const [showEmptyFieldError, setShowEmptyFieldError] = useState<boolean>(false);
+  const [showEmptyFieldError, setShowEmptyFieldError] =
+    useState<boolean>(false);
   const navigate = useNavigate();
   const theme = useTheme();
 
@@ -78,7 +79,11 @@ function SearchModal({ open, handleClose }: SearchModalProps) {
       const response = await docService.getSearchResults(searchTerm);
       console.log("Search response:", response);
 
-      if (response.hits && response.hits.hits && response.hits.hits.length > 0) {
+      if (
+        response.hits &&
+        response.hits.hits &&
+        response.hits.hits.length > 0
+      ) {
         setSearchResults(response.hits.hits); // Update search results
         setShowNoResults(false); // Hide "No results found" message
       } else {
@@ -136,10 +141,13 @@ function SearchModal({ open, handleClose }: SearchModalProps) {
           transform: "translate(-50%, -50%)",
           width: "80%",
           maxWidth: "800px",
+          maxHeight: "70%",
           bgcolor: "background.paper",
           boxShadow: 24,
           p: 4,
           borderRadius: 1,
+          display: "flex", // Add this
+          flexDirection: "column", // Add this
         }}
       >
         <Typography id="modal-modal-title" variant="h6" component="h2">
@@ -195,9 +203,14 @@ function SearchModal({ open, handleClose }: SearchModalProps) {
               </span>
             </Typography>
             <TableContainer
-              sx={{ mt: 4, boxShadow: "0px 2px 2px 1px rgba(0, 0, 0, 0.1)" }}
+              sx={{
+                mt: 4,
+                boxShadow: "0px 2px 2px 1px rgba(0, 0, 0, 0.1)",
+                height: "calc(100% - 200px)",
+                overflow: "auto",
+              }}
             >
-              <Table>
+              <Table stickyHeader>
                 <TableHead
                   sx={{
                     background: theme.palette.kyoPurple.main,
@@ -205,19 +218,49 @@ function SearchModal({ open, handleClose }: SearchModalProps) {
                   }}
                 >
                   <TableRow>
-                    <TableCell sx={{ color: "white", fontWeight: "bold" }}>
+                    <TableCell
+                      sx={{
+                        color: "white",
+                        fontWeight: "bold",
+                        backgroundColor: theme.palette.kyoPurple.main, // Override sticky default
+                      }}
+                    >
                       Document Name
                     </TableCell>
-                    <TableCell sx={{ color: "white", fontWeight: "bold" }}>
+                    <TableCell
+                      sx={{
+                        color: "white",
+                        fontWeight: "bold",
+                        backgroundColor: theme.palette.kyoPurple.main, // Override sticky default
+                      }}
+                    >
                       Type
                     </TableCell>
-                    <TableCell sx={{ color: "white", fontWeight: "bold" }}>
+                    <TableCell
+                      sx={{
+                        color: "white",
+                        fontWeight: "bold",
+                        backgroundColor: theme.palette.kyoPurple.main, // Override sticky default
+                      }}
+                    >
                       Release Date
                     </TableCell>
-                    <TableCell sx={{ color: "white", fontWeight: "bold" }}>
+                    <TableCell
+                      sx={{
+                        color: "white",
+                        fontWeight: "bold",
+                        backgroundColor: theme.palette.kyoPurple.main, // Override sticky default
+                      }}
+                    >
                       Categories
                     </TableCell>
-                    <TableCell sx={{ color: "white", fontWeight: "bold" }}>
+                    <TableCell
+                      sx={{
+                        color: "white",
+                        fontWeight: "bold",
+                        backgroundColor: theme.palette.kyoPurple.main, // Override sticky default
+                      }}
+                    >
                       Functionsubfn
                     </TableCell>
                   </TableRow>

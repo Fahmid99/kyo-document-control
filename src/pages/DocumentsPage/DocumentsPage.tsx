@@ -162,7 +162,7 @@ const DocumentsPage: React.FC<DocumentsPageProps> = ({ docTypes = [] }) => {
   };
 
   return (
-    <div>
+    <Box sx={{ height: "85vh", display: "flex", flexDirection: "column" }}>
       {/* Page Title and Icon */}
       <Box display={"flex"} alignItems="center">
         <Typography
@@ -209,6 +209,10 @@ const DocumentsPage: React.FC<DocumentsPageProps> = ({ docTypes = [] }) => {
           padding: "1em",
           border: "1px solid #e1e1e1",
           boxShadow: "0px 2px 2px 1px rgba(0, 0, 0, 0.1)",
+          flex: 1, // Take remaining space
+          display: "flex",
+          flexDirection: "column",
+          minHeight: 0, // Important for overflow to work
         }}
       >
         <Filters
@@ -225,7 +229,7 @@ const DocumentsPage: React.FC<DocumentsPageProps> = ({ docTypes = [] }) => {
           handleRowClick={handleRowClick}
         />
       </Box>
-    </div>
+    </Box>
   );
 };
 

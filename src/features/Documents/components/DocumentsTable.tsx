@@ -15,8 +15,6 @@ interface DocumentsTableProps {
   handleRowClick: (doc: Document) => void;
 }
 
-
-
 // Utility function to format the date as dd-mm-yyyy
 const formatDate = (dateString: string): string => {
   const date = new Date(dateString);
@@ -50,29 +48,40 @@ function DocumentsTable({
   });
 
   return (
-    <TableContainer sx={{ boxShadow: "0px 2px 4px 1px rgba(0, 0, 0, 0.1)" }}>
-      <Table>
-        <TableHead sx={{ background: "#6e3cbe", color: "white" }}>
+    <TableContainer
+      sx={{
+        boxShadow: "0px 2px 4px 1px rgba(0, 0, 0, 0.1)",
+        overflow: "auto",
+        flex: 1, // Take remaining space after filters
+        minHeight: 0, // Important for overflow
+      }}
+    >
+      <Table stickyHeader>
+        <TableHead
+          sx={{ background: "#6e3cbe", color: "white"}}
+        >
           <TableRow>
             {/* Name Column */}
             <TableCell
-              sx={{ color: "white", fontWeight: "bold", fontSize: "16px" }}
+              sx={{
+                color: "white",
+                fontWeight: "bold",
+                fontSize: "16px",
+                position: "sticky",
+                top: 0,
+                backgroundColor: "#6e3cbe",
+                zIndex: 100,
+              }}
             >
               <TableSortLabel
                 active={orderBy === "name"}
                 direction={orderBy === "name" ? order : "asc"}
                 onClick={() => handleSort("name")}
                 sx={{
-                  color: "white", // Ensure text stays white
-                  "&.Mui-active": {
-                    color: "white", // Ensure text stays white when active
-                  },
-                  "&:hover": {
-                    color: "white", // Ensure text stays white on hover
-                  },
-                  "& .MuiTableSortLabel-icon": {
-                    color: "white !important", // Ensure the arrow is white
-                  },
+                  color: "white",
+                  "&.Mui-active": { color: "white" },
+                  "&:hover": { color: "white" },
+                  "& .MuiTableSortLabel-icon": { color: "white !important" },
                 }}
               >
                 Name
@@ -81,23 +90,25 @@ function DocumentsTable({
 
             {/* Type Column */}
             <TableCell
-              sx={{ color: "white", fontWeight: "bold", fontSize: "16px" }}
+              sx={{
+                color: "white",
+                fontWeight: "bold",
+                fontSize: "16px",
+                position: "sticky", // Add this
+                top: 0, // Add this
+                backgroundColor: "#6e3cbe", // Add this
+                zIndex: 100, // Add this
+              }}
             >
               <TableSortLabel
                 active={orderBy === "type"}
                 direction={orderBy === "type" ? order : "asc"}
                 onClick={() => handleSort("type")}
                 sx={{
-                  color: "white", // Ensure text stays white
-                  "&.Mui-active": {
-                    color: "white", // Ensure text stays white when active
-                  },
-                  "&:hover": {
-                    color: "white", // Ensure text stays white on hover
-                  },
-                  "& .MuiTableSortLabel-icon": {
-                    color: "white !important", // Ensure the arrow is white
-                  },
+                  color: "white",
+                  "&.Mui-active": { color: "white" },
+                  "&:hover": { color: "white" },
+                  "& .MuiTableSortLabel-icon": { color: "white !important" },
                 }}
               >
                 Type
@@ -106,37 +117,55 @@ function DocumentsTable({
 
             {/* Function Column */}
             <TableCell
-              sx={{ color: "white", fontWeight: "bold", fontSize: "16px" }}
+              sx={{
+                color: "white",
+                fontWeight: "bold",
+                fontSize: "16px",
+                position: "sticky", // Add this
+                top: 0, // Add this
+                backgroundColor: "#6e3cbe", // Add this
+                zIndex: 100, // Add this
+              }}
             >
               Function
             </TableCell>
 
             {/* Category Column */}
             <TableCell
-              sx={{ color: "white", fontWeight: "bold", fontSize: "16px" }}
+              sx={{
+                color: "white",
+                fontWeight: "bold",
+                fontSize: "16px",
+                position: "sticky", // Add this
+                top: 0, // Add this
+                backgroundColor: "#6e3cbe", // Add this
+                zIndex: 100, // Add this
+              }}
             >
               Category
             </TableCell>
 
             {/* Release Date Column */}
             <TableCell
-              sx={{ color: "white", fontWeight: "bold", fontSize: "16px" }}
+              sx={{
+                color: "white",
+                fontWeight: "bold",
+                fontSize: "16px",
+                position: "sticky", // Add this
+                top: 0, // Add this
+                backgroundColor: "#6e3cbe", // Add this
+                zIndex: 100, // Add this
+              }}
             >
               <TableSortLabel
                 active={orderBy === "releasedate"}
                 direction={orderBy === "releasedate" ? order : "asc"}
                 onClick={() => handleSort("releasedate")}
                 sx={{
-                  color: "white", // Ensure text stays white
-                  "&.Mui-active": {
-                    color: "white", // Ensure text stays white when active
-                  },
-                  "&:hover": {
-                    color: "white", // Ensure text stays white on hover
-                  },
-                  "& .MuiTableSortLabel-icon": {
-                    color: "white !important", // Ensure the arrow is white
-                  },
+                  color: "white",
+                  "&.Mui-active": { color: "white" },
+                  "&:hover": { color: "white" },
+                  "& .MuiTableSortLabel-icon": { color: "white !important" },
                 }}
               >
                 Release Date
