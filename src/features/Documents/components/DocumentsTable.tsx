@@ -45,6 +45,11 @@ const formatDate = (dateString: string): string => {
 const getDocumentIcon = (type: string) => {
   const iconProps = { fontSize: "small" as const };
   
+  // Handle undefined/null type
+  if (!type) {
+    return <DocumentIcon {...iconProps} />;
+  }
+  
   switch (type.toLowerCase()) {
     case 'policy':
       return <PolicyIcon {...iconProps} />;
@@ -61,6 +66,11 @@ const getDocumentIcon = (type: string) => {
 
 // Function to get color for document type
 const getTypeColor = (type: string) => {
+  // Handle undefined/null type
+  if (!type) {
+    return '#616161'; // Gray
+  }
+  
   switch (type.toLowerCase()) {
     case 'policy':
       return '#1976d2'; // Blue
@@ -262,7 +272,7 @@ function DocumentsTable({
               {/* Type */}
               <TableCell sx={{ py: 2, px: 3 }}>
                 <Chip
-                  label={doc.data.type}
+                  label={doc.data.type || "Unknown"}
                   size="small"
                   sx={{
                     backgroundColor: alpha(getTypeColor(doc.data.type), 0.1),
