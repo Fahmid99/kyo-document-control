@@ -144,7 +144,6 @@ function DocumentsTable({
       sx={{
         borderRadius: "12px",
         overflow: "auto",
-        boxShadow: `0 8px 32px ${alpha(theme.palette.kyoPurple?.main || '#6e3cbe', 0.12)}`,
         border: `1px solid ${alpha(theme.palette.kyoPurple?.main || '#6e3cbe', 0.08)}`,
         flex: 1,
         minHeight: 0,

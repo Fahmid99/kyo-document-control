@@ -509,6 +509,7 @@ function ContentViewPage() {
               sx={{
                 borderColor: "#6e3cbe",
                 color: "#6e3cbe",
+                background:"white",
                 fontWeight: 600,
                 borderRadius: "8px",
                 textTransform: "none",
