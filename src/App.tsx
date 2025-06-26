@@ -18,6 +18,8 @@ interface DocType {
 
 function App() {
   const [docTypes, setDocTypes] = useState<DocType[]>([]);
+  const [documents, setDocuments] = useState([]);
+  const [totalDocumentCount, setTotalDocumentCount] = useState<number>(0);
 
   useEffect(() => {
     const getDocTypes = async () => {
@@ -25,15 +27,28 @@ function App() {
         const response = await docService.getDocTypes();
         setDocTypes(response);
       } catch (error) {
-        console.error("There was an error fecthing the document types:", error);
+        console.error("There was an error fetching the document types:", error);
       }
     };
+
+    const getDocuments = async () => {
+      try {
+        const response = await docService.getDocuments();
+        setDocuments(response);
+        setTotalDocumentCount(response.length); // Set total count
+      } catch (error) {
+        console.error("There was an error fetching documents:", error);
+        setTotalDocumentCount(0);
+      }
+    };
+
     getDocTypes();
+    getDocuments();
   }, []);
 
   return (
     <ThemeProvider theme={theme}>
-      <Box sx={{ 
+      <Box sx={{
         minHeight: "100vh",
         display: "flex",
         flexDirection: "column"
@@ -41,17 +56,46 @@ function App() {
         <Router>
           <Routes>
             {/* Root route with Sidebar */}
-            <Route path="/" element={<Sidebar docTypes={docTypes} />}>
-              <Route index element={<DocumentsPage docTypes={docTypes} />} />
+            <Route 
+              path="/" 
+              element={
+                <Sidebar 
+                  docTypes={docTypes} 
+                  totalDocumentCount={totalDocumentCount}
+                />
+              }
+            >
+              <Route 
+                index 
+                element={
+                  <DocumentsPage 
+                    docTypes={docTypes} 
+                    documents={documents}
+                    totalDocumentCount={totalDocumentCount}
+                  />
+                } 
+              />
               {/* Default page */}
               <Route path="help" element={<HelpPage />} />
               <Route
                 path="documents"
-                element={<DocumentsPage docTypes={docTypes} />}
+                element={
+                  <DocumentsPage 
+                    docTypes={docTypes} 
+                    documents={documents}
+                    totalDocumentCount={totalDocumentCount}
+                  />
+                }
               >
                 <Route
                   path=":category"
-                  element={<DocumentsPage docTypes={docTypes} />}
+                  element={
+                    <DocumentsPage 
+                      docTypes={docTypes} 
+                      documents={documents}
+                      totalDocumentCount={totalDocumentCount}
+                    />
+                  }
                 />
                 {/* Nested route for category */}
               </Route>

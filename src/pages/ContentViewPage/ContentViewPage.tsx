@@ -28,6 +28,9 @@ import {
   Article,
   Policy,
   Assignment,
+  Category,
+  Functions,
+  CalendarToday,
 } from "@mui/icons-material";
 import NavigateNextIcon from "@mui/icons-material/NavigateNext";
 
@@ -134,9 +137,9 @@ function ContentViewPage() {
     const type = documentData?.data.type?.toLowerCase();
     const iconProps = {
       sx: {
-        fontSize: "2rem", // Slightly smaller
-        padding: "8px", // Reduced padding
-        borderRadius: "8px", // Smaller radius
+        fontSize: "2rem",
+        padding: "8px",
+        borderRadius: "8px",
         backgroundColor: "#6e3cbe",
         color: "white",
         boxShadow: "0 2px 8px rgba(110, 60, 190, 0.3)",
@@ -158,27 +161,34 @@ function ContentViewPage() {
   return (
     <Box
       sx={{
-        height: "calc(100vh - 120px)",
+        height: "calc(100vh - 140px)",
         display: "flex",
-        flexDirection: "column",
+        flexDirection: "row", // Changed to row layout
+        gap: 2,
+        padding: "8px",
       }}
     >
-      {/* Compact Header Section */}
+      {/* Left Sidebar - Header Component */}
       <Paper
-        elevation={0}
+        elevation={2}
         sx={{
           background:
             "linear-gradient(135deg, rgba(110, 60, 190, 0.05) 0%, rgba(110, 60, 190, 0.02) 100%)",
           borderRadius: "12px",
-          padding: "12px 20px", // Further reduced padding
-          marginBottom: "8px", // Reduced margin
+          padding: "16px",
           border: "1px solid rgba(110, 60, 190, 0.1)",
+          width: "380px", // Fixed width for sidebar
+          flexShrink: 0,
+          display: "flex",
+          flexDirection: "column",
+          gap: 2,
+          overflow: "auto", // Allow scrolling if content overflows
         }}
       >
         {/* Breadcrumbs */}
         <Breadcrumbs
           separator={<NavigateNextIcon fontSize="small" />}
-          sx={{ mb: 1.5 }} // Removed right margin
+          sx={{ mb: 1 }}
         >
           <Link
             color="inherit"
@@ -188,11 +198,11 @@ function ContentViewPage() {
               display: "flex",
               alignItems: "center",
               textDecoration: "none",
-              fontSize: "0.875rem",
+              fontSize: "0.9rem",
               "&:hover": { color: "#6e3cbe" },
             }}
           >
-            <Home sx={{ mr: 0.5, fontSize: "0.875rem" }} />
+            <Home sx={{ mr: 0.5, fontSize: "0.9rem" }} />
             Dashboard
           </Link>
           <Link
@@ -201,7 +211,7 @@ function ContentViewPage() {
             onClick={() => navigate("/documents")}
             sx={{
               textDecoration: "none",
-              fontSize: "0.875rem",
+              fontSize: "0.9rem",
               "&:hover": { color: "#6e3cbe" },
             }}
           >
@@ -215,7 +225,7 @@ function ContentViewPage() {
             }
             sx={{
               textDecoration: "none",
-              fontSize: "0.875rem",
+              fontSize: "0.9rem",
               "&:hover": { color: "#6e3cbe" },
             }}
           >
@@ -225,191 +235,300 @@ function ContentViewPage() {
             color="text.primary"
             sx={{
               fontWeight: 500,
-              fontSize: "0.875rem",
+              fontSize: "0.9rem",
               overflow: "hidden",
               textOverflow: "ellipsis",
               whiteSpace: "nowrap",
-              maxWidth: "200px",
+              maxWidth: "150px",
             }}
           >
             {documentData?.name || "Document"}
           </Typography>
         </Breadcrumbs>
 
-        {/* Main Header Content */}
-        <Box display="flex" alignItems="center" gap={2}>
-          {/* Left Side - Icon, Title and Document Details */}
-          <Box display="flex" alignItems="center" gap={2} flex={1}>
-            {/* Icon */}
-            <Box>{getDocumentIcon()}</Box>
+        {/* Document Header */}
+        <Box display="flex" alignItems="flex-start" gap={2}>
+          {/* Icon */}
+          <Box flexShrink={0}>{getDocumentIcon()}</Box>
 
-            {/* Title and Document Details */}
-            <Box flex={1}>
-              <Box
-                display="flex"
-                alignItems="center"
-                gap={1.5}
-                mb={1}
-                flexWrap="wrap"
-              >
-                <Typography
-                  variant="h4"
-                  sx={{
-                    fontWeight: 700,
-                    color: "#212121",
-                    fontSize: "1.4rem",
-                    lineHeight: 1.2,
-                    wordBreak: "break-word",
-                  }}
-                >
-                  {documentData?.name || "Loading..."}
-                </Typography>
+          {/* Title and Type */}
+          <Box flex={1} minWidth={0}>
+            <Typography
+              variant="h5"
+              sx={{
+                fontWeight: 700,
+                color: "#212121",
+                fontSize: "1.4rem",
+                lineHeight: 1.3,
+                wordBreak: "break-word",
+                mb: 1.5,
+              }}
+            >
+              {documentData?.name || "Loading..."}
+            </Typography>
 
-                {/* Document Type Badge */}
-                {documentData?.data.type && (
-                  <Chip
-                    label={documentData.data.type}
-                    variant="outlined"
-                    size="medium"
-                    sx={{
-                      backgroundColor: "rgba(110, 60, 190, 0.1)",
-                      borderColor: "#6e3cbe",
-                      color: "#6e3cbe",
-                      fontWeight: 600,
-                      fontSize: "0.875rem",
-                      height: "32px",
-                    }}
-                  />
-                )}
-              </Box>
+            {/* Document Type Badge */}
+            {documentData?.data.type && (
+              <Chip
+                label={documentData.data.type}
+                variant="outlined"
+                size="medium"
+                sx={{
+                  backgroundColor: "rgba(110, 60, 190, 0.1)",
+                  borderColor: "#6e3cbe",
+                  color: "#6e3cbe",
+                  fontWeight: 600,
+                  fontSize: "0.85rem",
+                  height: "28px",
+                  mb: 2,
+                }}
+              />
+            )}
+          </Box>
+        </Box>
 
-              {/* Document Details Chips + Action Buttons Row */}
-              {documentData && (
-                <Box
-                  display="flex"
-                  alignItems="center"
-                  gap={1}
-                  flexWrap="wrap"
-                  justifyContent="space-between"
-                >
-                  {/* Left side - Document detail chips */}
-                  <Box
-                    display="flex"
-                    alignItems="center"
-                    gap={1}
-                    flexWrap="wrap"
-                  >
-                    {documentData.data.category &&
-                      documentData.data.category.length > 0 && (
-                        <Chip
-                          label={`Categories: ${documentData.data.category.join(", ")}`}
-                          size="medium"
-                          variant="outlined"
+        {/* Document Information Section */}
+        <Box>
+          <Typography
+            variant="h6"
+            sx={{
+              fontWeight: 600,
+              color: "#212121",
+              fontSize: "1.1rem",
+              mb: 1.5,
+              display: "flex",
+              alignItems: "center",
+              gap: 1,
+            }}
+          >
+            <Description sx={{ fontSize: "1.2rem", color: "#6e3cbe" }} />
+            Document Information
+          </Typography>
+
+          {/* Document Details Table */}
+          {documentData && (
+            <TableContainer
+              component={Paper}
+              elevation={0}
+              sx={{
+                backgroundColor: "rgba(255, 255, 255, 0.8)",
+                border: "1px solid rgba(110, 60, 190, 0.15)",
+                borderRadius: "8px",
+                mb: 3,
+              }}
+            >
+              <Table size="small">
+                <TableBody>
+                  {/* Categories Row */}
+                  {documentData.data.category &&
+                    documentData.data.category.length > 0 && (
+                      <TableRow>
+                        <TableCell
                           sx={{
+                            fontWeight: 600,
                             color: "#6e3cbe",
-                            borderColor: "#6e3cbe",
-                            fontWeight: "600",
-                            height: "28px",
-                            fontSize: "0.8rem",
-                            "& .MuiChip-label": {
-                              px: 1.5,
-                            },
+                            backgroundColor: "rgba(110, 60, 190, 0.05)",
+                            border: "none",
+                            py: 1.2,
+                            width: "110px",
+                            fontSize: "0.9rem",
                           }}
-                        />
-                      )}
-                    {documentData.data.functionsubfn &&
-                      documentData.data.functionsubfn.length > 0 && (
-                        <Chip
-                          label={`Functions: ${documentData.data.functionsubfn.join(", ")}`}
-                          size="medium"
-                          variant="outlined"
-                          color="secondary"
+                        >
+                          <Box display="flex" alignItems="center" gap={0.7}>
+                            <Category fontSize="medium" />
+                            Categories
+                          </Box>
+                        </TableCell>
+                        <TableCell
                           sx={{
-                            fontWeight: "600",
-                            height: "28px",
-                            fontSize: "0.8rem",
-                            "& .MuiChip-label": {
-                              px: 1.5,
-                            },
+                            border: "none",
+                            py: 1.2,
                           }}
-                        />
-                      )}
-                    <Chip
-                      label={`Release Date: ${formatDate(documentData.data.releasedate)}`}
-                      size="medium"
-                      variant="filled"
-                      sx={{
-                        backgroundColor: "rgba(110, 60, 190, 0.1)",
-                        color: "#6e3cbe",
-                        fontWeight: "500",
-                        height: "28px",
-                        fontSize: "0.8rem",
-                        "& .MuiChip-label": {
-                          px: 1.5,
-                        },
-                      }}
-                    />
-                  </Box>
+                        >
+                          <Box display="flex" gap={0.7} flexWrap="wrap">
+                            {documentData.data.category.map((category, index) => (
+                              <Chip
+                                key={index}
+                                label={category}
+                                size="small"
+                                variant="outlined"
+                                sx={{
+                                  height: "26px",
+                                  fontSize: "0.8rem",
+                                  borderColor: "rgba(110, 60, 190, 0.3)",
+                                  color: "#6e3cbe",
+                                  backgroundColor: "rgba(110, 60, 190, 0.05)",
+                                  fontWeight: 500,
+                                }}
+                              />
+                            ))}
+                          </Box>
+                        </TableCell>
+                      </TableRow>
+                    )}
 
-                  {/* Right side - Action Buttons */}
-                  <Box display="flex" gap={1}>
-                    <Button
-                      onClick={handleDownloadClick}
-                      variant="contained"
-                      startIcon={<Download />}
-                      size="small"
+                  {/* Functions Row */}
+                  {documentData.data.functionsubfn &&
+                    documentData.data.functionsubfn.length > 0 && (
+                      <TableRow>
+                        <TableCell
+                          sx={{
+                            fontWeight: 600,
+                            color: "#6e3cbe",
+                            backgroundColor: "rgba(110, 60, 190, 0.05)",
+                            border: "none",
+                            py: 1.2,
+                            width: "110px",
+                            fontSize: "0.9rem",
+                          }}
+                        >
+                          <Box display="flex" alignItems="center" gap={0.7}>
+                            <Functions fontSize="medium" />
+                            Functions
+                          </Box>
+                        </TableCell>
+                        <TableCell
+                          sx={{
+                            border: "none",
+                            py: 1.2,
+                          }}
+                        >
+                          <Box display="flex" gap={0.7} flexWrap="wrap">
+                            {documentData.data.functionsubfn.map((func, index) => (
+                              <Chip
+                                key={index}
+                                label={func}
+                                size="small"
+                                variant="outlined"
+                                sx={{
+                                  height: "26px",
+                                  fontSize: "0.8rem",
+                                  borderColor: "rgba(156, 39, 176, 0.3)",
+                                  color: "#9c27b0",
+                                  backgroundColor: "rgba(156, 39, 176, 0.05)",
+                                  fontWeight: 500,
+                                }}
+                              />
+                            ))}
+                          </Box>
+                        </TableCell>
+                      </TableRow>
+                    )}
+
+                  {/* Release Date Row */}
+                  <TableRow>
+                    <TableCell
                       sx={{
-                        backgroundColor: "#6e3cbe",
-                        color: "white",
                         fontWeight: 600,
-                        borderRadius: "6px",
-                        textTransform: "none",
-                        height: "32px",
-                        fontSize: "0.875rem",
-                        minWidth: "100px",
-                        "&:hover": {
-                          backgroundColor: "#5a2d9f",
-                          transform: "translateY(-1px)",
-                          boxShadow: "0 4px 12px rgba(110, 60, 190, 0.3)",
-                        },
-                        transition: "all 0.2s ease-in-out",
-                      }}
-                    >
-                      Download
-                    </Button>
-                    <Button
-                      onClick={handleOpenInNewTab}
-                      variant="outlined"
-                      startIcon={<OpenInNew />}
-                      size="small"
-                      sx={{
-                        borderColor: "#6e3cbe",
                         color: "#6e3cbe",
-                        fontWeight: 600,
-                        borderRadius: "6px",
-                        textTransform: "none",
-                        height: "32px",
-                        fontSize: "0.875rem",
-                        minWidth: "100px",
-                        borderWidth: "1.5px",
-                        "&:hover": {
-                          borderColor: "#5a2d9f",
-                          backgroundColor: "rgba(110, 60, 190, 0.05)",
-                          borderWidth: "1.5px",
-                        },
+                        backgroundColor: "rgba(110, 60, 190, 0.05)",
+                        border: "none",
+                        py: 1.2,
+                        width: "110px",
+                        fontSize: "0.9rem",
                       }}
                     >
-                      New Tab
-                    </Button>
-                  </Box>
-                </Box>
-              )}
-            </Box>
+                      <Box display="flex" alignItems="center" gap={0.7}>
+                        <CalendarToday fontSize="medium" />
+                        Released
+                      </Box>
+                    </TableCell>
+                    <TableCell
+                      sx={{
+                        border: "none",
+                        py: 1.2,
+                      }}
+                    >
+                      <Chip
+                        label={formatDate(documentData.data.releasedate)}
+                        size="small"
+                        sx={{
+                          height: "26px",
+                          fontSize: "0.8rem",
+                          backgroundColor: "rgba(110, 60, 190, 0.1)",
+                          color: "#6e3cbe",
+                          fontWeight: 500,
+                        }}
+                      />
+                    </TableCell>
+                  </TableRow>
+                </TableBody>
+              </Table>
+            </TableContainer>
+          )}
+        </Box>
+
+        {/* Quick Actions Section */}
+        <Box>
+          <Typography
+            variant="h6"
+            sx={{
+              fontWeight: 600,
+              color: "#212121",
+              fontSize: "1.1rem",
+              mb: 1.5,
+              display: "flex",
+              alignItems: "center",
+              gap: 1,
+            }}
+          >
+            <Download sx={{ fontSize: "1.2rem", color: "#6e3cbe" }} />
+            Quick Actions
+          </Typography>
+
+          {/* Action Buttons */}
+          <Box display="flex" flexDirection="column" gap={1.5}>
+            <Button
+              onClick={handleDownloadClick}
+              variant="contained"
+              startIcon={<Download />}
+              fullWidth
+              sx={{
+                backgroundColor: "#6e3cbe",
+                color: "white",
+                fontWeight: 600,
+                borderRadius: "8px",
+                textTransform: "none",
+                height: "46px",
+                fontSize: "1rem",
+                "&:hover": {
+                  backgroundColor: "#5a2d9f",
+                  transform: "translateY(-1px)",
+                  boxShadow: "0 4px 12px rgba(110, 60, 190, 0.3)",
+                },
+                transition: "all 0.2s ease-in-out",
+              }}
+            >
+              Download Document
+            </Button>
+            <Button
+              onClick={handleOpenInNewTab}
+              variant="outlined"
+              startIcon={<OpenInNew />}
+              fullWidth
+              sx={{
+                borderColor: "#6e3cbe",
+                color: "#6e3cbe",
+                fontWeight: 600,
+                borderRadius: "8px",
+                textTransform: "none",
+                height: "46px",
+                fontSize: "1rem",
+                borderWidth: "1.5px",
+                "&:hover": {
+                  borderColor: "#5a2d9f",
+                  backgroundColor: "rgba(110, 60, 190, 0.05)",
+                  borderWidth: "1.5px",
+                },
+              }}
+            >
+              Open in New Tab
+            </Button>
           </Box>
         </Box>
       </Paper>
 
-      {/* PDF Viewer - Takes Remaining Space */}
+      {/* Right Side - PDF Viewer (Full Space) */}
       {pdfUrl && (
         <Box
           sx={{
@@ -417,7 +536,8 @@ function ContentViewPage() {
             overflow: "hidden",
             boxShadow: "0px 2px 8px rgba(0, 0, 0, 0.1)",
             flex: 1, // Takes all remaining space
-            minHeight: 0, // Important for flex child
+            minWidth: 0, // Important for flex child
+            backgroundColor: "#fff",
           }}
         >
           <iframe

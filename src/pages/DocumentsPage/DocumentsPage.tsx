@@ -32,6 +32,8 @@ interface DocType {
 
 interface DocumentsPageProps {
   docTypes: DocType[];
+  documents: any[]; // Add documents prop
+  totalDocumentCount: number; // Add totalDocumentCount prop
 }
 
 interface FilterEntry {
@@ -47,9 +49,14 @@ interface FilterData {
   entries: FilterEntry[];
 }
 
-const DocumentsPage: React.FC<DocumentsPageProps> = ({ docTypes = [] }) => {
+const DocumentsPage: React.FC<DocumentsPageProps> = ({ 
+  docTypes = [], 
+  documents = [], // Receive documents as prop
+  totalDocumentCount = 0 // Receive totalDocumentCount as prop
+}) => {
   const { category } = useParams<{ category?: string }>();
-  const [documents, setDocuments] = useState([]);
+  // Remove local documents state - now using prop
+  // const [documents, setDocuments] = useState([]);
   const [filterData, setFilterData] = useState<FilterData[]>([]);
   const [filterQuery, setFilterQuery] = useState({});
   const [searchQuery, setSearchQuery] = useState("");
@@ -83,16 +90,9 @@ const DocumentsPage: React.FC<DocumentsPageProps> = ({ docTypes = [] }) => {
     return matchingDocType ? matchingDocType.name : null;
   };
 
-  // Fetch documents and filter data on component mount
+  // Fetch only filter data on component mount (documents come from props)
   useEffect(() => {
-    const getDocuments = async () => {
-      try {
-        const response = await docService.getDocuments();
-        setDocuments(response);
-      } catch (error) {
-        console.error("There was an error fetching documents:", error);
-      }
-    };
+    // Remove getDocuments function since documents come as props
 
     const getFilterData = async () => {
       try {
@@ -104,9 +104,9 @@ const DocumentsPage: React.FC<DocumentsPageProps> = ({ docTypes = [] }) => {
       }
     };
 
-    getDocuments();
+    // Only fetch filter data now
     getFilterData();
-  }, []);
+  }, []); // Remove documents dependency since documents come from props
 
   // Get the corresponding type from docTypes array
   const type = category ? getDocTypeFromCategory(category) : null;
@@ -253,9 +253,9 @@ const DocumentsPage: React.FC<DocumentsPageProps> = ({ docTypes = [] }) => {
         fontSize: "2.5rem",
         padding: "12px",
         borderRadius: "12px",
-        backgroundColor: theme.palette.kyoPurple.main || "#6e3cbe",
+        backgroundColor: theme.palette.kyoPurple?.main || "#6e3cbe",
         color: "white",
-        boxShadow: `0 4px 12px ${theme.palette.kyoPurple.main || "#6e3cbe"}4D`,
+        boxShadow: `0 4px 12px ${theme.palette.kyoPurple?.main || "#6e3cbe"}4D`,
       },
     };
 
@@ -275,11 +275,11 @@ const DocumentsPage: React.FC<DocumentsPageProps> = ({ docTypes = [] }) => {
         <Paper
           elevation={0}
           sx={{
-            background: `linear-gradient(135deg, ${theme.palette.kyoPurple.main || "#6e3cbe"}0D 0%, ${theme.palette.kyoPurple.main || "#6e3cbe"}05 100%)`,
+            background: `linear-gradient(135deg, ${theme.palette.kyoPurple?.main || "#6e3cbe"}0D 0%, ${theme.palette.kyoPurple?.main || "#6e3cbe"}05 100%)`,
             borderRadius: "12px",
             padding: "1em",
             marginBottom: "16px",
-            border: `1px solid ${theme.palette.kyoPurple.main || "#6e3cbe"}1A`,
+            border: `1px solid ${theme.palette.kyoPurple?.main || "#6e3cbe"}1A`,
           }}
         >
           {/* Breadcrumbs */}
@@ -295,7 +295,7 @@ const DocumentsPage: React.FC<DocumentsPageProps> = ({ docTypes = [] }) => {
                 display: "flex",
                 alignItems: "center",
                 textDecoration: "none",
-                "&:hover": { color: theme.palette.kyoPurple.main || "#6e3cbe" },
+                "&:hover": { color: theme.palette.kyoPurple?.main || "#6e3cbe" },
               }}
             >
               <HomeIcon sx={{ mr: 0.5, fontSize: "1rem" }} />
@@ -307,7 +307,7 @@ const DocumentsPage: React.FC<DocumentsPageProps> = ({ docTypes = [] }) => {
               onClick={() => navigate("/documents")}
               sx={{
                 textDecoration: "none",
-                "&:hover": { color: theme.palette.kyoPurple.main || "#6e3cbe" },
+                "&:hover": { color: theme.palette.kyoPurple?.main || "#6e3cbe" },
               }}
             >
               Documents
@@ -345,9 +345,9 @@ const DocumentsPage: React.FC<DocumentsPageProps> = ({ docTypes = [] }) => {
                   variant="outlined"
                   size="medium"
                   sx={{
-                    backgroundColor: `${theme.palette.kyoPurple.main || "#6e3cbe"}1A`,
-                    borderColor: theme.palette.kyoPurple.main || "#6e3cbe",
-                    color: theme.palette.kyoPurple.main || "#6e3cbe",
+                    backgroundColor: `${theme.palette.kyoPurple?.main || "#6e3cbe"}1A`,
+                    borderColor: theme.palette.kyoPurple?.main || "#6e3cbe",
+                    color: theme.palette.kyoPurple?.main || "#6e3cbe",
                     fontWeight: 600,
                     fontSize: "0.875rem",
                   }}
@@ -386,8 +386,8 @@ const DocumentsPage: React.FC<DocumentsPageProps> = ({ docTypes = [] }) => {
                       size="small"
                       variant="outlined"
                       sx={{
-                        color: theme.palette.kyoPurple.main || "#6e3cbe",
-                        borderColor: theme.palette.kyoPurple.main || "#6e3cbe",
+                        color: theme.palette.kyoPurple?.main || "#6e3cbe",
+                        borderColor: theme.palette.kyoPurple?.main || "#6e3cbe",
                         fontWeight: "600",
                       }}
                     />
@@ -438,12 +438,12 @@ const DocumentsPage: React.FC<DocumentsPageProps> = ({ docTypes = [] }) => {
                   sx={{
                     borderWidth: "2px",
                     marginTop: "3px",
-                    color: theme.palette.kyoPurple.main || "#6e3cbe",
-                    borderColor: theme.palette.kyoPurple.main || "#6e3cbe",
+                    color: theme.palette.kyoPurple?.main || "#6e3cbe",
+                    borderColor: theme.palette.kyoPurple?.main || "#6e3cbe",
                     fontWeight: "bold",
                     "&:hover": {
-                      borderColor: theme.palette.kyoPurple.main || "#6e3cbe",
-                      backgroundColor: `${theme.palette.kyoPurple.main || "#6e3cbe"}10`,
+                      borderColor: theme.palette.kyoPurple?.main || "#6e3cbe",
+                      backgroundColor: `${theme.palette.kyoPurple?.main || "#6e3cbe"}10`,
                     },
                   }}
                 >
@@ -509,11 +509,11 @@ const DocumentsPage: React.FC<DocumentsPageProps> = ({ docTypes = [] }) => {
                   variant="outlined"
                   sx={{
                     mt: 2,
-                    color: theme.palette.kyoPurple.main || "#6e3cbe",
-                    borderColor: theme.palette.kyoPurple.main || "#6e3cbe",
+                    color: theme.palette.kyoPurple?.main || "#6e3cbe",
+                    borderColor: theme.palette.kyoPurple?.main || "#6e3cbe",
                     "&:hover": {
-                      borderColor: theme.palette.kyoPurple.main || "#6e3cbe",
-                      backgroundColor: `${theme.palette.kyoPurple.main || "#6e3cbe"}08`,
+                      borderColor: theme.palette.kyoPurple?.main || "#6e3cbe",
+                      backgroundColor: `${theme.palette.kyoPurple?.main || "#6e3cbe"}08`,
                     },
                   }}
                   onClick={() => {
@@ -577,7 +577,7 @@ const DocumentsPage: React.FC<DocumentsPageProps> = ({ docTypes = [] }) => {
               onClick={handleBack}
               sx={{
                 mr: 2,
-                color: theme.palette.kyoPurple.main || "#6e3cbe",
+                color: theme.palette.kyoPurple?.main || "#6e3cbe",
               }}
             >
               <BackIcon />

@@ -26,7 +26,6 @@ import DescriptionIcon from "@mui/icons-material/Description";
 import BusinessIcon from "@mui/icons-material/Business";
 import AssignmentIcon from "@mui/icons-material/Assignment";
 import { Button, Fade, Chip, Paper } from "@mui/material";
-import docService from "../../features/Documents/services/docService";
 
 const drawerWidth = 260; // Reduced from 300px for more content space
 
@@ -38,12 +37,14 @@ interface DocType {
 
 interface ClippedDrawerProps {
   docTypes: DocType[];
+  totalDocumentCount: number;
 }
 
 interface DrawerContentProps {
   docTypes: DocType[];
   open: boolean | undefined;
   handleClick: () => void;
+  totalDocumentCount: number;
 }
 
 // Enhanced style object for ListItemButton
@@ -111,6 +112,7 @@ const DrawerContent: React.FC<DrawerContentProps> = ({
   open,
   handleClick,
   docTypes = [],
+  totalDocumentCount = 0,
 }) => {
   const location = useLocation();
   const [showAllDocTypes, setShowAllDocTypes] = React.useState(false);
@@ -260,15 +262,16 @@ const DrawerContent: React.FC<DrawerContentProps> = ({
                 },
               }}
             />
-            {docTypes.length > 0 && (
+            {totalDocumentCount > 0 && (
               <Chip
                 size="small"
-                label={docTypes.length}
+                label={totalDocumentCount.toLocaleString()}
                 sx={{
                   backgroundColor: "rgba(110, 60, 190, 0.1)",
                   color: "#6e3cbe",
                   fontSize: "0.75rem",
                   height: "20px",
+                  fontWeight: 600,
                 }}
               />
             )}
@@ -533,7 +536,10 @@ const DrawerContent: React.FC<DrawerContentProps> = ({
   );
 };
 
-const ClippedDrawer: React.FC<ClippedDrawerProps> = ({ docTypes = [] }) => {
+const ClippedDrawer: React.FC<ClippedDrawerProps> = ({ 
+  docTypes = [], 
+  totalDocumentCount = 0 
+}) => {
   const handleClick = () => {
     // Handle click logic if needed
   };
@@ -579,7 +585,7 @@ const ClippedDrawer: React.FC<ClippedDrawerProps> = ({ docTypes = [] }) => {
                   lineHeight: 1,
                 }}
               >
-                Centralized Document Management
+                Lifecycle Management
               </Typography>
             </Box>
           </Box>
@@ -603,6 +609,7 @@ const ClippedDrawer: React.FC<ClippedDrawerProps> = ({ docTypes = [] }) => {
           handleClick={handleClick}
           open={undefined}
           docTypes={docTypes}
+          totalDocumentCount={totalDocumentCount}
         />
       </Drawer>
       <Box
